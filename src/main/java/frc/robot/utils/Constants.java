@@ -153,7 +153,7 @@ public final class Constants {
   public static final class ControllerConstants {
     public static final int driverControllerPort = 0;
     public static final int secondaryControllerPort = 1;
-    public static final double driveDeadzone = 0.05;
+    public static final double driveDeadzone = 0.01;
   }
 
 
