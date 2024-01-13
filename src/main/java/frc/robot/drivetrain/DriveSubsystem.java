@@ -70,9 +70,8 @@ public class DriveSubsystem extends SubsystemBase {
   private double currentTranslationDir = 0.0;
   private double currentTranslationMag = 0.0;
 
-
-  private SlewRateLimiter magLimiter = new SlewRateLimiter(DriveConstants.magnitudeSlewRate);
-  private SlewRateLimiter rotLimiter = new SlewRateLimiter(DriveConstants.rotationalSlewRate);
+  private SlewRateLimiter magLimiter = new SlewRateLimiter(DriveConstants.magnitudeSlewRate);   //LIMITS THE RATE OF CHANGE OF THE MAGNITUDE OF THE ROBOT'S SPEED
+  private SlewRateLimiter rotLimiter = new SlewRateLimiter(DriveConstants.rotationalSlewRate);  //LIMITS THE RATE OF CHANGE OF THE ROTATION SPEED OF THE ROBOT
   private double prevTime = WPIUtilJNI.now() * 1e-6;
 
 
