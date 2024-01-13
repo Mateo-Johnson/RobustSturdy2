@@ -117,14 +117,14 @@ public class DriveSubsystem extends SubsystemBase {
     );
 
 
-    //THIS CREATES THE CHOICES FOR AUTOS AND PUSHES THEM TO SMARTDASHBOARD
-    autoChooser = new SendableChooser<>();
-    autoChooser = AutoBuilder.buildAutoChooser(); //USES COMMANDS.NONE AS THE DEFAULT OPTION
-    //THE CODE BELOW IS A OPTION THAT ALLOWS YOU TO SPECIFY THE DEFAULT AUTO BY ITS NAME
-    //autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
+    // //THIS CREATES THE CHOICES FOR AUTOS AND PUSHES THEM TO SMARTDASHBOARD
+    // autoChooser = new SendableChooser<>();
+    // autoChooser = AutoBuilder.buildAutoChooser(); //USES COMMANDS.NONE AS THE DEFAULT OPTION
+    // //THE CODE BELOW IS A OPTION THAT ALLOWS YOU TO SPECIFY THE DEFAULT AUTO BY ITS NAME
+    // //autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
 
 
-    SmartDashboard.putData("Auto Chooser", autoChooser); //SEND THE DATA TO SMARTDASHBOARD
+    // SmartDashboard.putData("Auto Chooser", autoChooser); //SEND THE DATA TO SMARTDASHBOARD
 
 
   }

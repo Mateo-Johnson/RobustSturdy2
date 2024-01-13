@@ -47,8 +47,8 @@ public class RobotContainer {
 
         //LEFT STICK IS TRANSLATION RIGHT STICK IS TURNING
       new RunCommand(() -> drivetrain.drive(
-        -MathUtil.applyDeadband(primaryDriver.getLeftY(), ControllerConstants.driveDeadzone),
-        -MathUtil.applyDeadband(primaryDriver.getLeftX(), ControllerConstants.driveDeadzone),
+        -MathUtil.applyDeadband(primaryDriver.getLeftY(), ControllerConstants.driveDeadzone), //CONTROL THE ROBOT X SPEED
+        -MathUtil.applyDeadband(primaryDriver.getLeftX(), ControllerConstants.driveDeadzone), //CONTROL THE ROBOT Y SPEED
         -MathUtil.applyDeadband(primaryDriver.getRightX(), ControllerConstants.driveDeadzone),
         true, true),
     drivetrain));
