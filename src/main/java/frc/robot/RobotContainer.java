@@ -23,12 +23,9 @@ public class RobotContainer {
   //SUBSYSTEMS
   private final DriveSubsystem drivetrain = new DriveSubsystem();
 
-
-
-
   //DRIVER CONTROLLERS
-  public static CommandXboxController primaryDriver = new CommandXboxController(ControllerConstants.driverControllerPort);
-  public static CommandXboxController secondaryDriver = new CommandXboxController(ControllerConstants.secondaryControllerPort );
+  public static CommandXboxController primaryDriver = new CommandXboxController(0);
+  public static CommandXboxController secondaryDriver = new CommandXboxController(1);
 
 
 
