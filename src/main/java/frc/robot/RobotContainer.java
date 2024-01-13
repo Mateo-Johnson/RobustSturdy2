@@ -49,7 +49,7 @@ public class RobotContainer {
       new RunCommand(() -> drivetrain.drive(
         -MathUtil.applyDeadband(primaryDriver.getLeftY(), ControllerConstants.driveDeadzone), //CONTROL THE ROBOT X SPEED
         -MathUtil.applyDeadband(primaryDriver.getLeftX(), ControllerConstants.driveDeadzone), //CONTROL THE ROBOT Y SPEED
-        -MathUtil.applyDeadband(primaryDriver.getRightX(), ControllerConstants.driveDeadzone),
+        -MathUtil.applyDeadband(primaryDriver.getRightX(), ControllerConstants.driveDeadzone), //CONTROL THE ROBOT ROTATION
         true, true),
     drivetrain));
   }
@@ -69,7 +69,6 @@ public class RobotContainer {
 
   //THIS IS ALL OF THE AUTO PLEASE DON'T WRITE AUTO ANYWHERE ELSE
   public Command getAutonomousCommand() {
-
 
     return new PathPlannerAuto("New Auto");
 
