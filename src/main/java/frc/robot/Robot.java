@@ -37,12 +37,6 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer();
     shooter = new ShooterSubsystem();
 
-
-    for (int port = 5800; port <= 5807; port++) {
-      PortForwarder.add(port, "limelight.local", port);
-    }
-
-
     //chooser.setDefaultOption("Default Auto", defaultAuto);
     //chooser.addOption("My Auto 1", customAuto1);
     //chooser.addOption("My Auto 2", customAuto2);
