@@ -52,6 +52,7 @@ public final class Constants {
 
 
     //ANGULAR OFFSETS OF THE MODULES RELATIVES TO THE CHASSIS IN RADIANS
+    //MATEO YOU NEED TO CHANGE THESE THINGS FIRST THING WEDNESDAY
     public static final double frontLeftChassisAngularOffset = -Math.PI / 2;
     public static final double frontRightChassisAngularOffset = 0;
     public static final double backLeftChassisAngularOffset = Math.PI;
