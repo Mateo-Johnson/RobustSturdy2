@@ -122,6 +122,7 @@ public class SwerveModule {
     drivingEncoder.setPosition(0);
   }
 
+  //THIS MIGHT BE THE ISSUE?????? IF NOT THEN 😛😛😛😛😛
   public double getRawTurnEncoder(){
     return turningEncoder.getPosition();
   } 
