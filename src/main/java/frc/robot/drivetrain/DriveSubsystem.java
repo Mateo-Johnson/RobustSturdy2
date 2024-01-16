@@ -142,6 +142,13 @@ public class DriveSubsystem extends SubsystemBase {
             rearLeft.getPosition(),
             rearRight.getPosition()
         });
+
+    //INSTRUCTIONS - PHYSICALLY TURN ALL OF THE WHEELS SO THAT THEY FACE FORWARD. THEN IN THE CONSTANT FILE SET ALL CHASSIS ANGULAR OFFSETS TO WHATEVER VALUE THE RESPECTIVE MODULE IS READING
+    
+    SmartDashboard.putNumber("Front Left Module Angle:", frontLeft.getRawTurnEncoder());
+    SmartDashboard.putNumber("Front Right Module Angle:", frontRight.getRawTurnEncoder());
+    SmartDashboard.putNumber("Back Left Module Angle:", rearLeft.getRawTurnEncoder());
+    SmartDashboard.putNumber("Back Right Module Angle:", rearRight.getRawTurnEncoder());
   }
 
 
