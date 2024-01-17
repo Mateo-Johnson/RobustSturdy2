@@ -34,28 +34,28 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   //THIS IS THE FRONT LEFT MODULE
-  private final SwerveModule frontLeft = new SwerveModule(
+  private final static SwerveModule frontLeft = new SwerveModule(
       DriveConstants.frontLeftDrivingCanId,
       DriveConstants.frontLeftTurningCanId,
       DriveConstants.frontLeftChassisAngularOffset);
 
 
   //THIS IS THE FRONT RIGHT MODULE
-  private final SwerveModule frontRight = new SwerveModule(
+  private final static SwerveModule frontRight = new SwerveModule(
       DriveConstants.frontRightDrivingCanId,
       DriveConstants.frontRightTurningCanId,
       DriveConstants.frontRightChassisAngularOffset);
 
 
   //THIS IS THE BACK LEFT MODULE
-  private final SwerveModule rearLeft = new SwerveModule(
+  private final static SwerveModule rearLeft = new SwerveModule(
       DriveConstants.rearLeftDrivingCanId,
       DriveConstants.rearLeftTurningCanId,
       DriveConstants.backLeftChassisAngularOffset);
 
 
   //THIS IS THE BACK RIGHT MODULE
-  private final SwerveModule rearRight = new SwerveModule(
+  private final static SwerveModule rearRight = new SwerveModule(
       DriveConstants.rearRightDrivingCanId,
       DriveConstants.rearRightTurningCanId,
       DriveConstants.backRightChassisAngularOffset);
@@ -128,6 +128,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   }
 
+      
+  public static double fR = frontRight.getRawTurnEncoder();
+  public static double fL = frontLeft.getRawTurnEncoder();
+  public static double bR = rearLeft.getRawTurnEncoder();
+  public static double bL = rearRight.getRawTurnEncoder();
 
 
 
@@ -144,11 +149,12 @@ public class DriveSubsystem extends SubsystemBase {
         });
 
     //INSTRUCTIONS - PHYSICALLY TURN ALL OF THE WHEELS SO THAT THEY FACE FORWARD. THEN IN THE CONSTANT FILE SET ALL CHASSIS ANGULAR OFFSETS TO WHATEVER VALUE THE RESPECTIVE MODULE IS READING
-    
+
     SmartDashboard.putNumber("Front Left Module Angle:", frontLeft.getRawTurnEncoder());
     SmartDashboard.putNumber("Front Right Module Angle:", frontRight.getRawTurnEncoder());
     SmartDashboard.putNumber("Back Left Module Angle:", rearLeft.getRawTurnEncoder());
     SmartDashboard.putNumber("Back Right Module Angle:", rearRight.getRawTurnEncoder());
+
   }
 
 
