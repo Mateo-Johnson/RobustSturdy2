@@ -55,11 +55,11 @@ public final class Constants {
 
     //ANGULAR OFFSETS OF THE MODULES RELATIVES TO THE CHASSIS IN RADIANS
     //MATEO YOU NEED TO CHANGE THESE THINGS FIRST THING WEDNESDAY
-    public static final double frontLeftChassisAngularOffset = -Math.PI / 2;
-    public static final double frontRightChassisAngularOffset = 0;
-    public static final double backLeftChassisAngularOffset = Math.PI;
-    public static final double backRightChassisAngularOffset = Math.PI / 2;
-
+    public static final double frontLeftChassisAngularOffset = 5.774; //GOOD OFFSET
+    public static final double frontRightChassisAngularOffset = 0.600; //GOOD OFFSET
+    public static final double backLeftChassisAngularOffset = 5.119; //GOOD OFFSET
+    public static final double backRightChassisAngularOffset = 5.570; //GOOD OFFSET
+ 
 
 
 
@@ -70,8 +70,8 @@ public final class Constants {
     public static final int frontLeftDrivingCanId = 8;
     public static final int frontLeftTurningCanId = 9;
     //BACK LEFT MODULE
-    public static final int rearLeftDrivingCanId = 4;
-    public static final int rearLeftTurningCanId = 5;
+    public static final int rearLeftDrivingCanId = 5;
+    public static final int rearLeftTurningCanId = 4;
     //FRONT RIGHT MODULE
     public static final int frontRightDrivingCanId = 7;
     public static final int frontRightTurningCanId = 6;
