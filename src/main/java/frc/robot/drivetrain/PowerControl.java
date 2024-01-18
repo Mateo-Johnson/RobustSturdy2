@@ -13,21 +13,23 @@ public class PowerControl {
 
 
     public void checkTemp () {
-        // Retrieves the temperature of the PDP, in degrees Celsius.
-        double temperatureCelsius = robotPDH.getTemperature();
-        SmartDashboard.putNumber("Temperature", temperatureCelsius);
+        //RETRIEVES TEMP OF PDH IN CELSIUS
+        double tempCelsius = robotPDH.getTemperature();
+
+        double tempFahrenheitminus32 = tempCelsius*1.8;
+        double tempFahrenheit = tempFahrenheitminus32+32;
+
+        SmartDashboard.putNumber("TEMP (°F)", tempFahrenheit);
     }
 
 
     public void watchForBrownouts () {
         double voltage = robotPDH.getVoltage();
-        SmartDashboard.putNumber("Voltage", voltage);
+        SmartDashboard.putNumber("VOLTAGE", voltage);
         double brownoutThreshold = 9.5;
        
         if (voltage < brownoutThreshold) {
-
-
-            DriverStation.reportWarning("Brownout detected! Voltage is low: " + voltage, false);
+            DriverStation.reportWarning("BROWNOUT! VOLTAGE IS LOW: " + voltage, false);
         }
     }
 
@@ -37,19 +39,19 @@ public class PowerControl {
 
         //GET THE TOTAL CURRENT OF ALL CHANNELS
         double totalCurrent = robotPDH.getTotalCurrent();
-        SmartDashboard.putNumber("Total Current", totalCurrent);
+        SmartDashboard.putNumber("TOTAL CURRENT", totalCurrent);
 
 
         //GET THE TOTAL POWER OF ALL CHANNELS
         //POWER IS THE BUS VOLTAGE MULTIPLIED BY THE CURRENT WITH THE UNIT WATTS
         double totalPower = robotPDH.getTotalPower();
-        SmartDashboard.putNumber("Total Power", totalPower);
+        SmartDashboard.putNumber("TOTAL POWER", totalPower);
 
 
         //GET THE TOTAL ENERGY OF ALL CHANNELS
         //ENERGY IS THE TOTAL POWER SUMMONED OVER TIME IN UNITS JOULES
         double totalEnergy = robotPDH.getTotalEnergy();
-        SmartDashboard.putNumber("Total Energy", totalEnergy);
+        SmartDashboard.putNumber("TOTAL ENERGY", totalEnergy);
     }
 
 

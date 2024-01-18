@@ -25,24 +25,25 @@ public class FieldNav {
     }
 
     //CONVERT FIELD COORDINATES TO POSE2D
-    public static Pose2d convertToPose2d(double x, double y) {
-        //CHECK IF ITS IN THE FIELD BOUNDARIES
-        if (x >= 0 && x <= field_length && y >= 0 && y <= field_width) {
-            //CHECK IF THEY ARE IN A FORBIDDEN ZONE
-            for (RectangularZone zone : forbiddenZones) {
-                if (zone.contains(x, y)) {
-                    System.out.println("ERROR: COORDINATES ARE IN A FORBIDDEN ZONE");
-                    return null;
-                }
+public static Pose2d convertToPose2d(double x, double y) {
+    //CHECK IF ITS INSIDE THE FIELD
+    if (x >= 0 && x <= field_length && y >= 0 && y <= field_width) {
+        //CHECK IF ITS IN A FORBIDDEN ZONE
+        for (RectangularZone zone : forbiddenZones) {
+            if (zone.contains(x, y)) {
+                System.out.println("Error: Coordinates are in a forbidden zone");
+                return null;
             }
-            //CONVERT TO POSE2D
-            return new Pose2d(new Translation2d(x, y), new Rotation2d()); //ASSUMING ZERO ROTATION
-        } else {
-            //COORDINATES OUTSIDE OF BOUNDARIES
-            System.out.println("ERROR: COORDINATES ARE OUTSIDE THE FIELD BOUNDARIES");
-            return null;
         }
+        //CONVERT TO POSE2D
+        return new Pose2d(new Translation2d(x - origin_x, y - origin_y), new Rotation2d()); //ASSUMING ZERO ROTATION
+    } else {
+        //COORDINATES ARE OUTSIDE OF FIELD BOUNDARIES
+        System.out.println("Error: Coordinates are outside the field boundaries");
+        return null;
     }
+}
+
 
 
     //HELPER CLASS TO REPRESENT RECTANGULAR ZONES

@@ -155,9 +155,9 @@ public final class Constants {
 
 
   public static final class ControllerConstants {
-    public static final int driverControllerPort = 0;
-    public static final int secondaryControllerPort = 1;
-    public static final double driveDeadzone = 0.01;
+    public static final int driverControllerPort = 0; //PRIMARY DRIVER PORT
+    public static final int secondaryControllerPort = 1; //SECONDARY DRIVER PORT
+    public static final double driveDeadzone = 0.2; //DEADZONE OF JOYSTICKS
   }
 
 

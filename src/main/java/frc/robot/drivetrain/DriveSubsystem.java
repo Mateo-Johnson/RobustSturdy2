@@ -221,33 +221,32 @@ private void zeroHeading(double initialHeading) {
 
 
 public void moveToPose2d(Pose2d targetPose, double speedMetersPerSecond, double rotationDegreesPerSecond) {
-  // Get the initial heading before the move
+  //GET HEADING BEFORE THE MOVE
   double initialHeading = getHeading();
 
-  // Calculate the translation and rotation components to reach the target pose
+  //CALCULATE THE MOVEMENT AND ROTATION COMPONENTS OF THE POSITION
   Translation2d deltaTranslation = targetPose.getTranslation().minus(getPose().getTranslation());
   Rotation2d targetAngle = targetPose.getRotation().minus(Rotation2d.fromDegrees(initialHeading));
 
-  // Set the desired state for translation and rotation
+  //SET DESIRED STATE FOR TRANSLATION AND ROTATION
   SwerveModuleState translationState = new SwerveModuleState(speedMetersPerSecond, deltaTranslation.getAngle());
   SwerveModuleState rotationState = new SwerveModuleState(0.0, targetAngle);
   SwerveModuleState[] desiredStates = {translationState, translationState, translationState, rotationState};
 
-  // Set the desired module states
+  //SET THE DESIRED MODULE STATES
   setModuleStates(desiredStates);
 
-  // Wait until the robot has reached the target pose
+  //WAIT UNTIL IT HAS REACHED THE TARGET POSITION
   while (Math.abs(getPose().getTranslation().getX() - targetPose.getTranslation().getX()) > DriveConstants.translationToleranceMeters
           || Math.abs(getPose().getTranslation().getY() - targetPose.getTranslation().getY()) > DriveConstants.translationToleranceMeters
           || Math.abs(getHeading() - initialHeading - targetAngle.getDegrees()) > DriveConstants.turnToleranceDegrees) {
-      // You may want to add a delay here to avoid busy-waiting
-      // For example: Timer.delay(0.02);
+          Timer.delay(0.02);
   }
 
-  // Stop the robot after reaching the target pose
+  //STOP ROBOT AFTER REACHING TARGET POSE
   setWheelsX();
 
-  // Restore the initial heading
+  //RESTORE INITIAL HEADING
   zeroHeading(initialHeading);
 }
 

@@ -6,7 +6,6 @@
 package frc.robot.drivetrain;
 
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -14,7 +13,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import com.revrobotics.SparkMaxPIDController;
-import java.util.List;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import frc.robot.drivetrain.SwerveModule;
@@ -73,7 +71,7 @@ public class SwerveModule {
     turningEncoder.setVelocityConversionFactor(ModuleConstants.turningEncoderVelocityFactor);
 
 
-    //INVERT TURNING ENCODER
+    //INVERT TURNING ENCODER (DON'T ASK ME I DON'T KNOW WHY)
     turningEncoder.setInverted(ModuleConstants.turningEncoderInverted);
 
 
@@ -89,6 +87,7 @@ public class SwerveModule {
 
 
     //SET PID GAINS FOR DRIVING MOTOR (NOT FINAL VALUES MAKE SURE TO CHANGE)
+    //ASK MATEO FOR PID TUNING PROCEDURES
     drivingPIDController.setP(ModuleConstants.drivingP);
     drivingPIDController.setI(ModuleConstants.drivingI);
     drivingPIDController.setD(ModuleConstants.drivingD);
@@ -122,7 +121,7 @@ public class SwerveModule {
     drivingEncoder.setPosition(0);
   }
 
-  //I FIXED THE ISSUE 😛😛😛😛😛
+  //I FIXED THE ISSUE 😛😛😛😛😛 -MATEO AND RAHMA
   public double getRawTurnEncoder(){
     return turningEncoder.getPosition();
   } 
@@ -158,7 +157,7 @@ public class SwerveModule {
    * @param desiredState DESIRED STATE WITH SPEED AND ANGLE
    */
   public void setDesiredState(SwerveModuleState desiredState) {
-    //Apply chassis angular offset to the desired state.
+    //APPLY CHASSIS ANGULAR OFFSET TO THE TARGET POSITION
     SwerveModuleState correctedDesiredState = new SwerveModuleState();
     correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
     correctedDesiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(chassisAngularOffset));
