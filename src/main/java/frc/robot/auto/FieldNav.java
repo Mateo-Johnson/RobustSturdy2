@@ -9,15 +9,15 @@ import edu.wpi.first.math.geometry.Translation2d;
 public class FieldNav {
 
     //DEFINE FIELD DIMENSIONS
-    private static final double field_length = 54.0; //FEET
-    private static final double field_width = 27.0; //FEET
+    public static final double field_length = 54.0; //FEET
+    public static final double field_width = 27.0; //FEET
 
     //DEFINE ORIGIN POSITION
-    private static final double ORIGIN_X = 0.0;
-    private static final double ORIGIN_Y = 0.0;
+    private static final double origin_x = 0.0;
+    private static final double origin_y = 0.0;
 
     //DEFINE FORBIDDEN ZONES
-    private static final List<RectangularZone> forbiddenZones = new ArrayList<>();
+    public static final List<RectangularZone> forbiddenZones = new ArrayList<>();
 
     static {
         //EXAMPLE FORBIDDEN ZONE
@@ -31,7 +31,7 @@ public class FieldNav {
             //CHECK IF THEY ARE IN A FORBIDDEN ZONE
             for (RectangularZone zone : forbiddenZones) {
                 if (zone.contains(x, y)) {
-                    System.out.println("Error: Coordinates are in a forbidden zone");
+                    System.out.println("ERROR: COORDINATES ARE IN A FORBIDDEN ZONE");
                     return null;
                 }
             }
@@ -39,7 +39,7 @@ public class FieldNav {
             return new Pose2d(new Translation2d(x, y), new Rotation2d()); //ASSUMING ZERO ROTATION
         } else {
             //COORDINATES OUTSIDE OF BOUNDARIES
-            System.out.println("Error: Coordinates are outside the field boundaries");
+            System.out.println("ERROR: COORDINATES ARE OUTSIDE THE FIELD BOUNDARIES");
             return null;
         }
     }
@@ -47,10 +47,10 @@ public class FieldNav {
 
     //HELPER CLASS TO REPRESENT RECTANGULAR ZONES
     private static class RectangularZone {
-        private final double minX;
-        private final double minY;
-        private final double maxX;
-        private final double maxY;
+        public final double minX;
+        public final double minY;
+        public final double maxX;
+        public final double maxY;
 
         public RectangularZone(double minX, double minY, double maxX, double maxY) {
             this.minX = minX;
