@@ -14,6 +14,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -215,6 +216,39 @@ private void zeroHeading(double initialHeading) {
     double headingOffset = initialHeading - getHeading();
     gyro.reset();
     gyro.setAngleAdjustment(headingOffset);
+}
+
+
+
+public void moveToPose2d(Pose2d targetPose, double speedMetersPerSecond, double rotationDegreesPerSecond) {
+  // Get the initial heading before the move
+  double initialHeading = getHeading();
+
+  // Calculate the translation and rotation components to reach the target pose
+  Translation2d deltaTranslation = targetPose.getTranslation().minus(getPose().getTranslation());
+  Rotation2d targetAngle = targetPose.getRotation().minus(Rotation2d.fromDegrees(initialHeading));
+
+  // Set the desired state for translation and rotation
+  SwerveModuleState translationState = new SwerveModuleState(speedMetersPerSecond, deltaTranslation.getAngle());
+  SwerveModuleState rotationState = new SwerveModuleState(0.0, targetAngle);
+  SwerveModuleState[] desiredStates = {translationState, translationState, translationState, rotationState};
+
+  // Set the desired module states
+  setModuleStates(desiredStates);
+
+  // Wait until the robot has reached the target pose
+  while (Math.abs(getPose().getTranslation().getX() - targetPose.getTranslation().getX()) > DriveConstants.translationToleranceMeters
+          || Math.abs(getPose().getTranslation().getY() - targetPose.getTranslation().getY()) > DriveConstants.translationToleranceMeters
+          || Math.abs(getHeading() - initialHeading - targetAngle.getDegrees()) > DriveConstants.turnToleranceDegrees) {
+      // You may want to add a delay here to avoid busy-waiting
+      // For example: Timer.delay(0.02);
+  }
+
+  // Stop the robot after reaching the target pose
+  setWheelsX();
+
+  // Restore the initial heading
+  zeroHeading(initialHeading);
 }
 
 

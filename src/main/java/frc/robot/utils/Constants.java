@@ -31,6 +31,7 @@ public final class Constants {
   public static final class DriveConstants {
     //THIS IS HOW FAR THE ACTUAL ANGLE CAN BE FROM THE EST. ANGLE WITHOUT IT GETTING ANGRY
     public static final double turnToleranceDegrees = 2.0;
+    public static double translationToleranceMeters = 2.0;
     //DRIVING PARAMS - MAX CAPABLE SPEEDS NOT MAX ALLOWED SPEEDS
     public static final double maxSpeedMetersPerSecond = 4.8;
     public static final double maxAngularSpeed = 2 * Math.PI; //RADIANS PER SECOND
