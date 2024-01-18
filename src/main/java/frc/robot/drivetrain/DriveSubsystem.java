@@ -21,6 +21,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utils.SwerveUtils;
@@ -178,6 +179,37 @@ public class DriveSubsystem extends SubsystemBase {
         },
         pose);
   }
+
+  public void turnByAngle(double targetAngleDegrees) {
+    //GET THE INITIAL HEADING BEFORE THE TURN
+    double initialHeading = getHeading();
+
+    //SET THE DESIRED STATE FOR TURNING
+    SwerveModuleState turnState = new SwerveModuleState(0, Rotation2d.fromDegrees(targetAngleDegrees));
+    SwerveModuleState[] desiredStates = {turnState, turnState, turnState, turnState};
+
+    //SET THE DESIRED MODULE STATES
+    setModuleStates(desiredStates);
+
+    //WAIT UNTIL THE ROBOT HAS TURNED TO THE TARGET ANGLE
+    while (Math.abs(getHeading() - initialHeading - targetAngleDegrees) > DriveConstants.turnToleranceDegrees) {
+    //DELAY TO AVOID BUSY-WAITING
+    Timer.delay(0.02);
+    }
+
+    //STOP THE ROBOT AFTER REACHING THE TARGET ANGLE
+    setWheelsX();
+    
+    //RESTORE THE INITIAL HEADING
+    zeroHeading(initialHeading);
+}
+
+//METHOD TO ZERO THE HEADING WITH A SPECIFIC INITIAL HEADING VALUE
+private void zeroHeading(double initialHeading) {
+    double headingOffset = initialHeading - getHeading();
+    gyro.reset();
+    gyro.setAngleAdjustment(headingOffset);
+}
 
 
   /**
