@@ -36,8 +36,7 @@ public class RobotContainer {
     autoChooser = new SendableChooser<>(); //THIS CREATES THE CHOICES FOR AUTOS AND PUSHES THEM TO SMARTDASHBOARD\
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser); //SEND THE DATA TO SMARTDASHBOARD
-    //THE CODE BELOW IS A OPTION THAT ALLOWS YOU TO SPECIFY THE DEFAULT AUTO BY ITS NAME
-    //autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
+    autoChooser = AutoBuilder.buildAutoChooser("Default Path"); //SPECIFY THE DEFAULT AUTO BY ITS NAME
 
     configureButtonBindings(); //CONFIGURE BINDINGS
 
