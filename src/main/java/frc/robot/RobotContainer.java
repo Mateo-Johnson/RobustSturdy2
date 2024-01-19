@@ -10,8 +10,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.auto.PIDTuning;
 import frc.robot.drivetrain.DriveSubsystem;
-import frc.robot.vision.commands.VisionAdjust;
-import frc.robot.utils.Constants;
 import frc.robot.utils.Constants.ControllerConstants;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
