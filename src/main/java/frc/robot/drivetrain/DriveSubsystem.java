@@ -66,7 +66,7 @@ public class DriveSubsystem extends SubsystemBase {
   private final AHRS gyro = new AHRS(SPI.Port.kMXP);
 
 
-  //I DONT EVEN KNOW WHAT SLEW RATE IS BUT THESE CONTROL SLEW RATE AND THE DOCS TOLD ME TO (LATERAL MOVEMENT MAYBE?)
+  //I DON'T EVEN KNOW WHAT SLEW RATE IS BUT THESE CONTROL SLEW RATE AND THE DOCS TOLD ME TO (LATERAL MOVEMENT MAYBE?)
   private double currentRotation = 0.0;
   private double currentTranslationDir = 0.0;
   private double currentTranslationMag = 0.0;
