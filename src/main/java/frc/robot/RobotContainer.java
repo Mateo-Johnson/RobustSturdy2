@@ -15,12 +15,7 @@ import frc.robot.drivetrain.DriveSubsystem;
 import frc.robot.utils.Constants.ControllerConstants;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-
-
-
 
 public class RobotContainer {
   //SUBSYSTEMS
@@ -29,6 +24,7 @@ public class RobotContainer {
   //DRIVER CONTROLLERS
   public static CommandXboxController primaryDriver = new CommandXboxController(0);
   public static CommandXboxController secondaryDriver = new CommandXboxController(1);
+  
   private SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
