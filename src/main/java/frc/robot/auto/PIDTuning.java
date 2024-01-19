@@ -5,11 +5,15 @@
 package frc.robot.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.drivetrain.DriveSubsystem;
 
 public class PIDTuning extends CommandBase {
+  private final DriveSubsystem driveSubsystem;
+
   /** Creates a new PIDTuning. */
-  public PIDTuning() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public PIDTuning(DriveSubsystem driveSubsystem) {
+    this.driveSubsystem = driveSubsystem;
+    addRequirements(driveSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -19,9 +23,7 @@ public class PIDTuning extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-
-    
+    driveSubsystem.turnByAngle(45);
   }
 
   // Called once the command ends or is interrupted.
