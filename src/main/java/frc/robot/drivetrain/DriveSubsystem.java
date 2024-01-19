@@ -92,7 +92,6 @@ public class DriveSubsystem extends SubsystemBase {
   //THIS IS THE CHOOSER FOR THE AUTO OPTIONS
   private SendableChooser<Command> autoChooser;
 
-
   //CREATES A NEW DRIVESUBSYSTEM.
   public DriveSubsystem() {
 

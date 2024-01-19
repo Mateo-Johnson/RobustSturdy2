@@ -5,16 +5,17 @@ import java.util.List;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.utils.Constants.FieldConstants;
 
 public class FieldNav {
 
     //DEFINE FIELD DIMENSIONS
-    public static final double field_length = 54.0; //FEET
-    public static final double field_width = 27.0; //FEET
+    public static final double field_length = FieldConstants.field_length;
+    public static final double field_width = FieldConstants.field_width;
 
     //DEFINE ORIGIN POSITION
-    private static final double origin_x = 0.0;
-    private static final double origin_y = 0.0;
+    private static final double origin_x = FieldConstants.origin_x;
+    private static final double origin_y = FieldConstants.origin_y;
 
     //DEFINE FORBIDDEN ZONES
     public static final List<RectangularZone> forbiddenZones = new ArrayList<>();
