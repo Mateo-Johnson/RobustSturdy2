@@ -191,65 +191,75 @@ public class DriveSubsystem extends SubsystemBase {
         pose);
   }
 
-
-
- // Method for evading moving targets using Limelight
- public void evadeMovingTargets() {
-  
-
-  prevTX = 0.0;
-  prevTime = Timer.getFPGATimestamp();
-  // Check if a target is detected by the Limelight
+public void evadeMovingTargets() {
+  //CHECK IF TARGET DETECTED
   if (Vision.tV == true) {
-      // Use Limelight data for tracking the target and adjust movement
-      double targetX = Vision.tX; //TARGET Z OFFSET
-      double targetY = Vision.tY;
+      double targetX = Vision.tX; //X OFFSET
 
-      // Calculate desired movement based on target information and direction
+      //CALCULATE DESIRED MOVEMENT
       double xSpeed = calculateXSpeed(targetX);
-      double ySpeed = calculateYSpeed(targetY);
+      double ySpeed = calculateYSpeed(targetX);
 
-      // Evade the target by adjusting movement to the left
-      evadeTarget(xSpeed, ySpeed);
+      //CALCULATE TARGET MOVEMENT DIRECTION
+      double targetMovementDirection = calculateTargetMovementDirection(targetX);
 
-      // Update previous values for the next iteration
+      //EVADE TARGET BY MOVING IN OPPOSITE DIRECTION
+      evadeTarget(xSpeed, ySpeed, targetMovementDirection);
+
+      //UPDATE PREVIOUS VALUES
       prevTX = targetX;
       prevTime2 = Timer.getFPGATimestamp();
-  } else {
-      // No target detected, continue with normal operation or obstacle avoidance logic
-      // Example: drive(0.5, 0.0, 0.0, false, true); // Continue moving forward
   }
 }
 
-// Method to evade the target by adjusting the robot's movement to the left
-private void evadeTarget(double xSpeed, double ySpeed) {
-  // Example: Move to the left while continuing to move forward
-  double evasionFactor = 0.5;  // Adjust the coefficient based on your robot's behavior
-  drive(ySpeed, -xSpeed * evasionFactor, 0.0, false, true);
-}
-
-// Method to calculate X-axis speed based on target X offset and direction
-private double calculateXSpeed(double targetX) {
-  // Proportional control: Adjust the X-axis speed proportionally to the target X offset
-  double proportionalFactor = 0.02;  // Adjust the coefficient based on your robot's behavior
-
-  // Calculate the change in tX over time to determine direction
+//CALCULATE TARGET MOVEMENT DIRECTION BASED ON TX OFVER TIME
+private double calculateTargetMovementDirection(double targetX) {
   double deltaTime = Timer.getFPGATimestamp() - prevTime2;
   double deltaTX = targetX - prevTX;
 
-  // Determine the direction based on the sign of deltaTX
+  //CALCULATE TARGET MOVEMENT DIRECTION BASED ON ARCTAN
+  return Math.atan2(deltaTX, deltaTime);
+}
+
+//EVADE THE TARGET BY MOVING OPPOSITE
+private void evadeTarget(double xSpeed, double ySpeed, double targetMovementDirection) {
+  //MOVE IN THE OPPOSITE DIRECTION OF THE OBSTACLE
+  double evasionFactor = 0.5;  //THIS IS HOW MUCH WE WANT TO EVADE BY
+  double adjustedXSpeed = -xSpeed * evasionFactor;
+  double adjustedYSpeed = -ySpeed * evasionFactor;
+
+  //ROTATE THE ADJUSTED SPEEDS BASED ON THE TARGET'S MOVEMENT DIRECTION
+  double rotatedXSpeed = adjustedXSpeed * Math.cos(targetMovementDirection) - adjustedYSpeed * Math.sin(targetMovementDirection);
+  double rotatedYSpeed = adjustedXSpeed * Math.sin(targetMovementDirection) + adjustedYSpeed * Math.cos(targetMovementDirection);
+
+  //DRIVE WITH THE ADJUSTED AND ROTATED SPEEDS 
+  drive(rotatedYSpeed, rotatedXSpeed, 0.0, false, true);
+}
+
+//METHOD TO CALCULATE X-AXIS SPEED BASED ON TARGET X OFFSET AND DIRECTION
+private double calculateXSpeed(double targetX) {
+  //PROPORTIONAL CONTROL: ADJUST THE X-AXIS SPEED PROPORTIONALLY TO THE TARGET X OFFSET
+  double proportionalFactor = 0.02;  //ADJUST THE COEFFICIENT BASED ON YOUR ROBOT'S BEHAVIOR
+
+  //CALCULATE THE CHANGE IN TX OVER TIME TO DETERMINE DIRECTION
+  double deltaTime = Timer.getFPGATimestamp() - prevTime2;
+  double deltaTX = targetX - prevTX;
+
+  //DETERMINE THE DIRECTION BASED ON THE SIGN OF DELTATX
   int direction = (deltaTX > 0) ? 1 : -1;
 
-  // Adjust the X-axis speed based on direction
+  //ADJUST THE X-AXIS SPEED BASED ON DIRECTION
   return direction * targetX * proportionalFactor * deltaTime;
 }
 
-// Method to calculate Y-axis speed based on target X offset
+//CALCULATE Y-AXIS SPEED BASED ON TARGET X OFFSET
 private double calculateYSpeed(double targetX) {
-  // Proportional control: Adjust the Y-axis speed proportionally to the target X offset
-  double proportionalFactor = 0.02;  // Adjust the coefficient based on your robot's behavior
+  //PROPORTIONAL CONTROL: ADJUST THE Y-AXIS SPEED PROPORTIONALLY TO THE TARGET X OFFSET
+  double proportionalFactor = 0.02;  //ADJUST THE COEFFICIENT BASED ON ROBOT BEHAVIOR 
   return targetX * proportionalFactor;
 }
+
+
 
 
 
