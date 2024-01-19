@@ -151,12 +151,8 @@ public final class Constants {
     public static final double turningMinOutput = -1;
     public static final double turningMaxOutput = 1;
 
-
     public static final IdleMode drivingMotorIdleMode = IdleMode.kBrake;
     public static final IdleMode turningMotorIdleMode = IdleMode.kBrake;
-
-
-
 
     public static final int drivingMotorCurrentLimit = 50; //AMPS
     public static final int turningMotorCurrentLimit = 20; //AMPS
@@ -169,7 +165,7 @@ public final class Constants {
     public static final double driveDeadzone = 0.2; //DEADZONE OF JOYSTICKS
   }
 
-
+  
   public static final class AutoConstants {
     public static final double maxSpeedMetersPerSecond = 3;
     public static final double maxAccelerationMetersPerSecondSquared = 3;
