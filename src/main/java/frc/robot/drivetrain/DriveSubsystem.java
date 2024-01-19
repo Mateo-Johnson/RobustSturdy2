@@ -212,12 +212,12 @@ public void evadeMovingTargets() {
   }
 }
 
-//CALCULATE TARGET MOVEMENT DIRECTION BASED ON TX OFVER TIME
+//CALCULATE TARGET MOVEMENT DIRECTION BASED ON TX OVER TIME
 private double calculateTargetMovementDirection(double targetX) {
   double deltaTime = Timer.getFPGATimestamp() - prevTime2;
   double deltaTX = targetX - prevTX;
 
-  //CALCULATE TARGET MOVEMENT DIRECTION BASED ON ARCTAN
+  //CALCULATE TARGET MOVEMENT DIRECTION BASED ON ARCTANGENT
   return Math.atan2(deltaTX, deltaTime);
 }
 
