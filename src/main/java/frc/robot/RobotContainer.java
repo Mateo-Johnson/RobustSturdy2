@@ -7,12 +7,16 @@ package frc.robot;
 
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.auto.PIDTuning;
 import frc.robot.drivetrain.DriveSubsystem;
 import frc.robot.utils.Constants.ControllerConstants;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 
@@ -25,17 +29,17 @@ public class RobotContainer {
   //DRIVER CONTROLLERS
   public static CommandXboxController primaryDriver = new CommandXboxController(0);
   public static CommandXboxController secondaryDriver = new CommandXboxController(1);
-
-
-
-
-
+  private SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
 
+    autoChooser = new SendableChooser<>(); //THIS CREATES THE CHOICES FOR AUTOS AND PUSHES THEM TO SMARTDASHBOARD\
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser); //SEND THE DATA TO SMARTDASHBOARD
+    //THE CODE BELOW IS A OPTION THAT ALLOWS YOU TO SPECIFY THE DEFAULT AUTO BY ITS NAME
+    //autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
 
     configureButtonBindings(); //CONFIGURE BINDINGS
-
 
     ///CONFIGURE DEFAULT COMMANDS
     drivetrain.setDefaultCommand(

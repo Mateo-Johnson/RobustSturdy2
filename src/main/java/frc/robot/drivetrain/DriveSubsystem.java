@@ -23,10 +23,12 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utils.SwerveUtils;
 import frc.robot.utils.Constants.DriveConstants;
 import frc.robot.vision.Vision;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -92,11 +94,10 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   //THIS IS THE CHOOSER FOR THE AUTO OPTIONS
-  // private SendableChooser<Command> autoChooser;
+
 
   //CREATES A NEW DRIVESUBSYSTEM.
   public DriveSubsystem() {
-
 
     AutoBuilder.configureHolonomic(
       this::getPose, //POSE SUPPLIER
@@ -117,18 +118,6 @@ public class DriveSubsystem extends SubsystemBase {
       ),
       null, this //REFERENCE TO THIS SUBSYSTEM TO SET REQUIREMENTS
     );
-
-
-    // //THIS CREATES THE CHOICES FOR AUTOS AND PUSHES THEM TO SMARTDASHBOARD
-    // autoChooser = new SendableChooser<>();
-    // autoChooser = AutoBuilder.buildAutoChooser(); //USES COMMANDS.NONE AS THE DEFAULT OPTION
-    // //THE CODE BELOW IS A OPTION THAT ALLOWS YOU TO SPECIFY THE DEFAULT AUTO BY ITS NAME
-    // //autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
-
-
-    // SmartDashboard.putData("Auto Chooser", autoChooser); //SEND THE DATA TO SMARTDASHBOARD
-
-
   }
 
       
