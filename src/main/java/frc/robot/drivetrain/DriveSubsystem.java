@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utils.SwerveUtils;
 import frc.robot.utils.Constants.DriveConstants;
+import frc.robot.vision.Vision;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -71,6 +72,9 @@ public class DriveSubsystem extends SubsystemBase {
   private double currentRotation = 0.0;
   private double currentTranslationDir = 0.0;
   private double currentTranslationMag = 0.0;
+  private double prevTX;  //PREVIOUS TX VALUE
+  private double prevTime2;  //PREVIOUS TIME VALUE
+  
 
   private SlewRateLimiter magLimiter = new SlewRateLimiter(DriveConstants.magnitudeSlewRate);   //LIMITS THE RATE OF CHANGE OF THE MAGNITUDE OF THE ROBOT'S SPEED
   private SlewRateLimiter rotLimiter = new SlewRateLimiter(DriveConstants.rotationalSlewRate);  //LIMITS THE RATE OF CHANGE OF THE ROTATION SPEED OF THE ROBOT
@@ -90,7 +94,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   //THIS IS THE CHOOSER FOR THE AUTO OPTIONS
-  private SendableChooser<Command> autoChooser;
+  // private SendableChooser<Command> autoChooser;
 
   //CREATES A NEW DRIVESUBSYSTEM.
   public DriveSubsystem() {
@@ -159,6 +163,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
 
+
   /**
    * RETURNS THE ROBOT POSE
    *
@@ -185,6 +190,68 @@ public class DriveSubsystem extends SubsystemBase {
         },
         pose);
   }
+
+
+
+ // Method for evading moving targets using Limelight
+ public void evadeMovingTargets() {
+  
+
+  prevTX = 0.0;
+  prevTime = Timer.getFPGATimestamp();
+  // Check if a target is detected by the Limelight
+  if (Vision.tV == true) {
+      // Use Limelight data for tracking the target and adjust movement
+      double targetX = Vision.tX; //TARGET Z OFFSET
+      double targetY = Vision.tY;
+
+      // Calculate desired movement based on target information and direction
+      double xSpeed = calculateXSpeed(targetX);
+      double ySpeed = calculateYSpeed(targetY);
+
+      // Evade the target by adjusting movement to the left
+      evadeTarget(xSpeed, ySpeed);
+
+      // Update previous values for the next iteration
+      prevTX = targetX;
+      prevTime2 = Timer.getFPGATimestamp();
+  } else {
+      // No target detected, continue with normal operation or obstacle avoidance logic
+      // Example: drive(0.5, 0.0, 0.0, false, true); // Continue moving forward
+  }
+}
+
+// Method to evade the target by adjusting the robot's movement to the left
+private void evadeTarget(double xSpeed, double ySpeed) {
+  // Example: Move to the left while continuing to move forward
+  double evasionFactor = 0.5;  // Adjust the coefficient based on your robot's behavior
+  drive(ySpeed, -xSpeed * evasionFactor, 0.0, false, true);
+}
+
+// Method to calculate X-axis speed based on target X offset and direction
+private double calculateXSpeed(double targetX) {
+  // Proportional control: Adjust the X-axis speed proportionally to the target X offset
+  double proportionalFactor = 0.02;  // Adjust the coefficient based on your robot's behavior
+
+  // Calculate the change in tX over time to determine direction
+  double deltaTime = Timer.getFPGATimestamp() - prevTime2;
+  double deltaTX = targetX - prevTX;
+
+  // Determine the direction based on the sign of deltaTX
+  int direction = (deltaTX > 0) ? 1 : -1;
+
+  // Adjust the X-axis speed based on direction
+  return direction * targetX * proportionalFactor * deltaTime;
+}
+
+// Method to calculate Y-axis speed based on target X offset
+private double calculateYSpeed(double targetX) {
+  // Proportional control: Adjust the Y-axis speed proportionally to the target X offset
+  double proportionalFactor = 0.02;  // Adjust the coefficient based on your robot's behavior
+  return targetX * proportionalFactor;
+}
+
+
 
   public void turnByAngle(double targetAngleDegrees) {
     //GET THE INITIAL HEADING BEFORE THE TURN
