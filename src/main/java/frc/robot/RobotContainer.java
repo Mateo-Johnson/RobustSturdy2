@@ -8,6 +8,7 @@ package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.auto.PIDTuning;
 import frc.robot.drivetrain.DriveSubsystem;
 import frc.robot.vision.commands.VisionAdjust;
 import frc.robot.utils.Constants;
@@ -59,16 +60,17 @@ public class RobotContainer {
         .whileTrue(new RunCommand(
             () -> drivetrain.setWheelsX(),
             drivetrain));
-           
+
+    primaryDriver.a()
+        .whileTrue(new PIDTuning
+            (drivetrain));
   }
+    
 
 
   //THIS IS ALL OF THE AUTO PLEASE DON'T WRITE AUTO ANYWHERE ELSE
   public Command getAutonomousCommand() {
-
     return new PathPlannerAuto("New Auto");
-
-
   }
 }
 
