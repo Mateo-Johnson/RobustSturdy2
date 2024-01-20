@@ -28,6 +28,15 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final class FieldConstants {
+    //DEFINE FIELD DIMENSIONS
+    public static final double field_length = 54.0; //FEET
+    public static final double field_width = 27.0; //FEET
+    //DEFINE ORIGIN POSITION
+    public static final double origin_y = 0.0;
+    public static final double origin_x = 0.0;
+
+  }
   public static final class DriveConstants {
     //THIS IS HOW FAR THE ACTUAL ANGLE CAN BE FROM THE EST. ANGLE WITHOUT IT GETTING ANGRY
     public static final double turnToleranceDegrees = 2.0;
@@ -142,12 +151,8 @@ public final class Constants {
     public static final double turningMinOutput = -1;
     public static final double turningMaxOutput = 1;
 
-
     public static final IdleMode drivingMotorIdleMode = IdleMode.kBrake;
     public static final IdleMode turningMotorIdleMode = IdleMode.kBrake;
-
-
-
 
     public static final int drivingMotorCurrentLimit = 50; //AMPS
     public static final int turningMotorCurrentLimit = 20; //AMPS
@@ -160,7 +165,7 @@ public final class Constants {
     public static final double driveDeadzone = 0.2; //DEADZONE OF JOYSTICKS
   }
 
-
+  
   public static final class AutoConstants {
     public static final double maxSpeedMetersPerSecond = 3;
     public static final double maxAccelerationMetersPerSecondSquared = 3;
@@ -180,9 +185,11 @@ public final class Constants {
 
 
   public static final class NeoMotorConstants {
-    public static final double freeSpeedRpm = 5676;
+    public static final double freeSpeedRpm = 5676; //MATEO REMEMBERS THIS OFF THE TOP OF HIS HEAD LMAO
   }
 }
+
+
 
 
 

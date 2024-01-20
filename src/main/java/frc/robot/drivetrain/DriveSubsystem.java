@@ -23,11 +23,10 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utils.SwerveUtils;
 import frc.robot.utils.Constants.DriveConstants;
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.vision.Vision;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -67,10 +66,13 @@ public class DriveSubsystem extends SubsystemBase {
   private final AHRS gyro = new AHRS(SPI.Port.kMXP);
 
 
-  //I DONT EVEN KNOW WHAT SLEW RATE IS BUT THESE CONTROL SLEW RATE AND THE DOCS TOLD ME TO (LATERAL MOVEMENT MAYBE?)
+  //I DON'T EVEN KNOW WHAT SLEW RATE IS BUT THESE CONTROL SLEW RATE AND THE DOCS TOLD ME TO (LATERAL MOVEMENT MAYBE?)
   private double currentRotation = 0.0;
   private double currentTranslationDir = 0.0;
   private double currentTranslationMag = 0.0;
+  private double prevTX;  //PREVIOUS TX VALUE
+  private double prevTime2;  //PREVIOUS TIME VALUE
+  
 
   private SlewRateLimiter magLimiter = new SlewRateLimiter(DriveConstants.magnitudeSlewRate);   //LIMITS THE RATE OF CHANGE OF THE MAGNITUDE OF THE ROBOT'S SPEED
   private SlewRateLimiter rotLimiter = new SlewRateLimiter(DriveConstants.rotationalSlewRate);  //LIMITS THE RATE OF CHANGE OF THE ROTATION SPEED OF THE ROBOT
@@ -90,12 +92,10 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   //THIS IS THE CHOOSER FOR THE AUTO OPTIONS
-  private SendableChooser<Command> autoChooser;
 
 
   //CREATES A NEW DRIVESUBSYSTEM.
   public DriveSubsystem() {
-
 
     AutoBuilder.configureHolonomic(
       this::getPose, //POSE SUPPLIER
@@ -116,18 +116,6 @@ public class DriveSubsystem extends SubsystemBase {
       ),
       null, this //REFERENCE TO THIS SUBSYSTEM TO SET REQUIREMENTS
     );
-
-
-    // //THIS CREATES THE CHOICES FOR AUTOS AND PUSHES THEM TO SMARTDASHBOARD
-    // autoChooser = new SendableChooser<>();
-    // autoChooser = AutoBuilder.buildAutoChooser(); //USES COMMANDS.NONE AS THE DEFAULT OPTION
-    // //THE CODE BELOW IS A OPTION THAT ALLOWS YOU TO SPECIFY THE DEFAULT AUTO BY ITS NAME
-    // //autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
-
-
-    // SmartDashboard.putData("Auto Chooser", autoChooser); //SEND THE DATA TO SMARTDASHBOARD
-
-
   }
 
       
@@ -160,6 +148,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
 
+
   /**
    * RETURNS THE ROBOT POSE
    *
@@ -186,6 +175,78 @@ public class DriveSubsystem extends SubsystemBase {
         },
         pose);
   }
+
+public void evadeMovingTargets() {
+  //CHECK IF TARGET DETECTED
+  if (Vision.tV == true) {
+      double targetX = Vision.tX; //X OFFSET
+
+      //CALCULATE DESIRED MOVEMENT
+      double xSpeed = calculateXSpeed(targetX);
+      double ySpeed = calculateYSpeed(targetX);
+
+      //CALCULATE TARGET MOVEMENT DIRECTION
+      double targetMovementDirection = calculateTargetMovementDirection(targetX);
+
+      //EVADE TARGET BY MOVING IN OPPOSITE DIRECTION
+      evadeTarget(xSpeed, ySpeed, targetMovementDirection);
+
+      //UPDATE PREVIOUS VALUES
+      prevTX = targetX;
+      prevTime2 = Timer.getFPGATimestamp();
+  }
+}
+
+//CALCULATE TARGET MOVEMENT DIRECTION BASED ON TX OVER TIME
+private double calculateTargetMovementDirection(double targetX) {
+  double deltaTime = Timer.getFPGATimestamp() - prevTime2;
+  double deltaTX = targetX - prevTX;
+
+  //CALCULATE TARGET MOVEMENT DIRECTION BASED ON ARCTANGENT
+  return Math.atan2(deltaTX, deltaTime);
+}
+
+//EVADE THE TARGET BY MOVING OPPOSITE
+private void evadeTarget(double xSpeed, double ySpeed, double targetMovementDirection) {
+  //MOVE IN THE OPPOSITE DIRECTION OF THE OBSTACLE
+  double evasionFactor = 0.5;  //THIS IS HOW MUCH WE WANT TO EVADE BY
+  double adjustedXSpeed = -xSpeed * evasionFactor;
+  double adjustedYSpeed = -ySpeed * evasionFactor;
+
+  //ROTATE THE ADJUSTED SPEEDS BASED ON THE TARGET'S MOVEMENT DIRECTION
+  double rotatedXSpeed = adjustedXSpeed * Math.cos(targetMovementDirection) - adjustedYSpeed * Math.sin(targetMovementDirection);
+  double rotatedYSpeed = adjustedXSpeed * Math.sin(targetMovementDirection) + adjustedYSpeed * Math.cos(targetMovementDirection);
+
+  //DRIVE WITH THE ADJUSTED AND ROTATED SPEEDS 
+  drive(rotatedYSpeed, rotatedXSpeed, 0.0, false, true);
+}
+
+//METHOD TO CALCULATE X-AXIS SPEED BASED ON TARGET X OFFSET AND DIRECTION
+private double calculateXSpeed(double targetX) {
+  //PROPORTIONAL CONTROL: ADJUST THE X-AXIS SPEED PROPORTIONALLY TO THE TARGET X OFFSET
+  double proportionalFactor = 0.02;  //ADJUST THE COEFFICIENT BASED ON YOUR ROBOT'S BEHAVIOR
+
+  //CALCULATE THE CHANGE IN TX OVER TIME TO DETERMINE DIRECTION
+  double deltaTime = Timer.getFPGATimestamp() - prevTime2;
+  double deltaTX = targetX - prevTX;
+
+  //DETERMINE THE DIRECTION BASED ON THE SIGN OF DELTATX
+  int direction = (deltaTX > 0) ? 1 : -1;
+
+  //ADJUST THE X-AXIS SPEED BASED ON DIRECTION
+  return direction * targetX * proportionalFactor * deltaTime;
+}
+
+//CALCULATE Y-AXIS SPEED BASED ON TARGET X OFFSET
+private double calculateYSpeed(double targetX) {
+  //PROPORTIONAL CONTROL: ADJUST THE Y-AXIS SPEED PROPORTIONALLY TO THE TARGET X OFFSET
+  double proportionalFactor = 0.02;  //ADJUST THE COEFFICIENT BASED ON ROBOT BEHAVIOR 
+  return targetX * proportionalFactor;
+}
+
+
+
+
 
   public void turnByAngle(double targetAngleDegrees) {
     //GET THE INITIAL HEADING BEFORE THE TURN

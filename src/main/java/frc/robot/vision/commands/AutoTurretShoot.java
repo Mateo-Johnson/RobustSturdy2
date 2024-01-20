@@ -1,13 +1,10 @@
 package frc.robot.vision.commands;
 
 import org.opencv.core.Point;
-
-import frc.robot.turret.ShooterSubsystem;
 import frc.robot.vision.Vision;
 
 public class AutoTurretShoot {
     
-    private ShooterSubsystem shooter;
 
     Point detectTarget() {
         //CHECK IF THE LIMELIGHT HAS A TARGET
