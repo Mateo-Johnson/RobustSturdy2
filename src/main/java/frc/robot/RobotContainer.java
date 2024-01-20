@@ -24,7 +24,7 @@ public class RobotContainer {
   //DRIVER CONTROLLERS
   public static CommandXboxController primaryDriver = new CommandXboxController(0);
   public static CommandXboxController secondaryDriver = new CommandXboxController(1);
-  
+  //SENDABLECHOOSER FOR AUTO
   private SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
