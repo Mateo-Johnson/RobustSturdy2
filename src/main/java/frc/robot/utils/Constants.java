@@ -8,7 +8,7 @@ package frc.robot.utils;
 
 import com.revrobotics.CANSparkMax.IdleMode;
 
-
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -136,7 +136,7 @@ public final class Constants {
     public static final double turningEncoderPositionPIDMaxInput = turningEncoderPositionFactor; //RADIANS
 
 
-    public static final double drivingP = 0.04;
+    public static final double drivingP = 0.01;
     public static final double drivingI = 0;
     public static final double drivingD = 0;
     public static final double drivingFF = 1 / driveWheelFreeSpeedRps;
@@ -150,6 +150,7 @@ public final class Constants {
     public static final double turningFF = 0;
     public static final double turningMinOutput = -1;
     public static final double turningMaxOutput = 1;
+    
 
     public static final IdleMode drivingMotorIdleMode = IdleMode.kBrake;
     public static final IdleMode turningMotorIdleMode = IdleMode.kBrake;

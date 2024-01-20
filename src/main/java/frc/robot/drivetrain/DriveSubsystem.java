@@ -267,17 +267,10 @@ private double calculateYSpeed(double targetX) {
 
     //STOP THE ROBOT AFTER REACHING THE TARGET ANGLE
     setWheelsX();
-    
-    //RESTORE THE INITIAL HEADING
-    zeroHeading(initialHeading);
+
 }
 
-//METHOD TO ZERO THE HEADING WITH A SPECIFIC INITIAL HEADING VALUE
-private void zeroHeading(double initialHeading) {
-    double headingOffset = initialHeading - getHeading();
-    gyro.reset();
-    gyro.setAngleAdjustment(headingOffset);
-}
+
 
 
 
@@ -307,8 +300,6 @@ public void moveToPose2d(Pose2d targetPose, double speedMetersPerSecond, double 
   //STOP ROBOT AFTER REACHING TARGET POSE
   setWheelsX();
 
-  //RESTORE INITIAL HEADING
-  zeroHeading(initialHeading);
 }
 
 
