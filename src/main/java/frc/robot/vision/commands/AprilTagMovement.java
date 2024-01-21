@@ -13,13 +13,13 @@ import frc.robot.vision.Vision;
 
 public class AprilTagMovement extends CommandBase {
   private final DriveSubsystem driveSubsystem;
-  public static double initialHeading;
+  public static double headingAtThisVeryMomentInTimeAndTwoDimensionalSpace;
   /** Creates a new AprilTag. */
   public AprilTagMovement(DriveSubsystem driveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveSubsystem = driveSubsystem;
     addRequirements(driveSubsystem);
-    initialHeading = driveSubsystem.getHeading();
+    headingAtThisVeryMomentInTimeAndTwoDimensionalSpace = driveSubsystem.getHeading();
   }
 
   double tP = 0.01145;
@@ -35,12 +35,13 @@ public class AprilTagMovement extends CommandBase {
   @Override
   public void execute() {
 
-    initialHeading = driveSubsystem.getHeading();
-    SmartDashboard.putNumber("Heading", initialHeading);
+    headingAtThisVeryMomentInTimeAndTwoDimensionalSpace = driveSubsystem.getHeading();
+    double tX = Vision.tX; //THE X OFFSET OF THE TARGET, IN DEGREES FROM -30° TO 30°
 
-    if (Vision.tV == true && Vision.targetID == 8) {
-      double tX = Vision.tX;
-      double turnValue = aprilTagPID.calculate(tX, 0);
+    if (Vision.tV == true) { //CHECK IF IT HAS THE TARGET
+
+      //THE LINE BELOW BASICALLY MEANS THAT IT IS CALCULATING THE PID CONTROLLER VALUE, TRYING TO MAKE THE FIRST VALUE MATCH THE SECOND VALUE
+      double turnValue = aprilTagPID.calculate(tX, 0); //CREATE THE PID CONTROLLER, FROM THE STARTING POINT OF THE X OFFSET, AND MOVING TO ZERO
       SmartDashboard.putNumber("TurnValue", turnValue);
       driveSubsystem.drive(0, 0, -turnValue, false, true);
       

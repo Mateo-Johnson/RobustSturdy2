@@ -128,6 +128,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    double currentHeading = getHeading(); //SET HEADING ON SMARTDASHBOARD
+    SmartDashboard.putNumber("Heading", currentHeading); 
+
+
     //UPDATE ODOMETRY
     odometry.update(
         Rotation2d.fromDegrees(gyro.getAngle()),
@@ -243,34 +248,6 @@ private double calculateYSpeed(double targetX) {
   double proportionalFactor = 0.02;  //ADJUST THE COEFFICIENT BASED ON ROBOT BEHAVIOR 
   return targetX * proportionalFactor;
 }
-
-
-
-
-
-  public void turnByAngle(double targetAngleDegrees) {
-    //GET THE INITIAL HEADING BEFORE THE TURN
-    double initialHeading = getHeading();
-
-    //SET THE DESIRED STATE FOR TURNING
-    SwerveModuleState turnState = new SwerveModuleState(0, Rotation2d.fromDegrees(targetAngleDegrees));
-    SwerveModuleState[] desiredStates = {turnState, turnState, turnState, turnState};
-
-    //SET THE DESIRED MODULE STATES
-    setModuleStates(desiredStates);
-
-    //WAIT UNTIL THE ROBOT HAS TURNED TO THE TARGET ANGLE
-    while (Math.abs(getHeading() - initialHeading - targetAngleDegrees) > DriveConstants.turnToleranceDegrees) {
-    //DELAY TO AVOID BUSY-WAITING
-    Timer.delay(0.02);
-    }
-
-    //STOP THE ROBOT AFTER REACHING THE TARGET ANGLE
-    setWheelsX();
-
-}
-
-
 
 
 
