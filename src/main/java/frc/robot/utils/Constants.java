@@ -64,7 +64,6 @@ public final class Constants {
 
 
     //ANGULAR OFFSETS OF THE MODULES RELATIVES TO THE CHASSIS IN RADIANS
-    //MATEO YOU NEED TO CHANGE THESE THINGS FIRST THING WEDNESDAY
     public static final double frontLeftChassisAngularOffset = 2.33; //GOOD OFFSET
     public static final double frontRightChassisAngularOffset = 4.99; //GOOD OFFSET
     public static final double backLeftChassisAngularOffset = 0.71; //GOOD OFFSET
@@ -74,7 +73,6 @@ public final class Constants {
 
 
     //SPARK MAX CAN IDS
-
 
     //FRONT LEFT MODULE
     public static final int frontLeftDrivingCanId = 8;

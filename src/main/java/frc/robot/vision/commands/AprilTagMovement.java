@@ -46,16 +46,20 @@ public class AprilTagMovement extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("tX", tX);
-    initialHeading = driveSubsystem.getHeading();
-    SmartDashboard.putNumber("Heading", initialHeading);
-    double turnValue = turningPID.calculate(tX, 0);
-    SmartDashboard.putNumber("TurnValue", turnValue);
-    driveSubsystem.drive(0, 0, -turnValue, false, true);
 
+    headingAtThisVeryMomentInTimeAndTwoDimensionalSpace = driveSubsystem.getHeading();
+    double tX = Vision.tX; //THE X OFFSET OF THE TARGET, IN DEGREES FROM -30° TO 30°
+
+    if (Vision.tV == true) { //CHECK IF IT HAS THE TARGET
+
+      //THE LINE BELOW BASICALLY MEANS THAT IT IS CALCULATING THE PID CONTROLLER VALUE, TRYING TO MAKE THE FIRST VALUE MATCH THE SECOND VALUE
+      double turnValue = aprilTagPID.calculate(tX, 0); //CREATE THE PID CONTROLLER, FROM THE STARTING POINT OF THE X OFFSET, AND MOVING TO ZERO
+      SmartDashboard.putNumber("TurnValue", turnValue);
+      driveSubsystem.drive(0, 0, -turnValue, false, true);
+      
+    } 
 
   }
-
 
   // Called once the command ends or is interrupted.
   @Override
