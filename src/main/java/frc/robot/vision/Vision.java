@@ -15,8 +15,6 @@ public class Vision extends SubsystemBase {
 public static String limelightName = "limelight";
 
 //THE LIMELIGHT URL
-public static String JSONDump = LimelightLib.getJSONDump(limelightName);
-public static URL limelightURLString = LimelightLib.getLimelightURLString(limelightName, JSONDump);
 
 //COORDINATE VALUE GETTERS
 public static double tX = LimelightLib.getTX(limelightName);
@@ -50,13 +48,7 @@ public static double[] targetColor = LimelightLib.getTargetColor(limelightName);
 public static double pipelineIndex = LimelightLib.getCurrentPipelineIndex(limelightName);
 public static double captureLatency = LimelightLib.getLatency_Capture(limelightName);
 public static double pipelineLatency = LimelightLib.getLatency_Pipeline(limelightName);
-public static LimelightResults latestResults = LimelightLib.getLatestResults(limelightName);
-public static double LimelightNTDouble = LimelightLib.getLimelightNTDouble(limelightName, null);
-public static double[] limelightNTDoubleArray = LimelightLib.getLimelightNTDoubleArray(limelightName, JSONDump);
-public static NetworkTable limelightNTTable = LimelightLib.getLimelightNTTable(limelightName);
-public static NetworkTableEntry limelightNTTableEntry = LimelightLib.getLimelightNTTableEntry(limelightName, JSONDump);
-public static double[] getPythonScriptData = LimelightLib.getPythonScriptData(limelightName);
-public static String limelightNTString = LimelightLib.getLimelightNTString(limelightName, JSONDump);
+
 
 
 Vision() {

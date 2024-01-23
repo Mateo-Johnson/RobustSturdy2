@@ -37,15 +37,12 @@ public class AprilTagMovement extends CommandBase {
 
     headingAtThisVeryMomentInTimeAndTwoDimensionalSpace = driveSubsystem.getHeading();
     double tX = Vision.tX; //THE X OFFSET OF THE TARGET, IN DEGREES FROM -30° TO 30°
-
-    if (Vision.tV == true) { //CHECK IF IT HAS THE TARGET
+    double turnValue;
 
       //THE LINE BELOW BASICALLY MEANS THAT IT IS CALCULATING THE PID CONTROLLER VALUE, TRYING TO MAKE THE FIRST VALUE MATCH THE SECOND VALUE
-      double turnValue = aprilTagPID.calculate(tX, 0); //CREATE THE PID CONTROLLER, FROM THE STARTING POINT OF THE X OFFSET, AND MOVING TO ZERO
+      turnValue = aprilTagPID.calculate(tX, 0); //CREATE THE PID CONTROLLER, FROM THE STARTING POINT OF THE X OFFSET, AND MOVING TO ZERO
       SmartDashboard.putNumber("TurnValue", turnValue);
       driveSubsystem.drive(0, 0, -turnValue, false, true);
-      
-    } 
 
   }
 

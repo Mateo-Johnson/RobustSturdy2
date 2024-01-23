@@ -62,9 +62,9 @@ public class RobotContainer {
         .whileTrue(new TurnToAngle
             (drivetrain));
 
-  primaryDriver.b()
-  .whileTrue(new AprilTagMovement
-      (drivetrain));
+    primaryDriver.b()
+      .whileTrue(new AprilTagMovement
+        (drivetrain));
 }
     
 
