@@ -20,6 +20,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
@@ -128,6 +131,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry tx = table.getEntry("tx");
+    double tX = tx.getDouble(0.0);
+    SmartDashboard.putNumber("tX", tX);
 
     double currentHeading = getHeading(); //SET HEADING ON SMARTDASHBOARD
     SmartDashboard.putNumber("Heading", currentHeading); 

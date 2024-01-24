@@ -34,9 +34,13 @@ public class AprilTagMovement extends CommandBase {
   NetworkTableEntry tx = table.getEntry("tx");
   NetworkTableEntry ty = table.getEntry("ty");
   NetworkTableEntry ta = table.getEntry("ta");
+  NetworkTableEntry tv = table.getEntry("tv");
   double tX = tx.getDouble(0.0);
-  double y = ty.getDouble(0.0);
-  double area = ta.getDouble(0.0);
+  double tY = ty.getDouble(0.0);
+  double target = tv.getDouble(0.0);
+
+  
+
 
   // Called when the command is initially scheduled.
   @Override
@@ -47,19 +51,16 @@ public class AprilTagMovement extends CommandBase {
   @Override
   public void execute() {
 
-    headingAtThisVeryMomentInTimeAndTwoDimensionalSpace = driveSubsystem.getHeading();
-    double tX = Vision.tX; //THE X OFFSET OF THE TARGET, IN DEGREES FROM -30° TO 30°
+      double tX = tx.getDouble(0.0);
 
-    if (Vision.tV == true) { //CHECK IF IT HAS THE TARGET
-
+      if (target == 1) {
       //THE LINE BELOW BASICALLY MEANS THAT IT IS CALCULATING THE PID CONTROLLER VALUE, TRYING TO MAKE THE FIRST VALUE MATCH THE SECOND VALUE
-      double turnValue = aprilTagPID.calculate(tX, 0); //CREATE THE PID CONTROLLER, FROM THE STARTING POINT OF THE X OFFSET, AND MOVING TO ZERO
+      double turnValue = turningPID.calculate(tX, 0); //CREATE THE PID CONTROLLER, FROM THE STARTING POINT OF THE X OFFSET, AND MOVING TO ZERO
       SmartDashboard.putNumber("TurnValue", turnValue);
-      driveSubsystem.drive(0, 0, -turnValue, false, true);
+      driveSubsystem.drive(0, 0, turnValue, false, true);
+      }
       
     } 
-
-  }
 
   // Called once the command ends or is interrupted.
   @Override
