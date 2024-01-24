@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.drivetrain.DriveSubsystem;
 import frc.robot.drivetrain.commands.TurnToAngle;
 import frc.robot.utils.Constants.ControllerConstants;
-import frc.robot.vision.commands.AprilTagMovement;
+import frc.robot.vision.commands.APTAdjust;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
@@ -63,7 +63,7 @@ public class RobotContainer {
             (drivetrain));
 
     primaryDriver.b()
-      .whileTrue(new AprilTagMovement
+      .whileTrue(new APTAdjust
         (drivetrain));
 }
     
