@@ -53,12 +53,10 @@ public class APTAdjust extends CommandBase {
 
       double tX = tx.getDouble(0.0);
 
-      if (target == 1) {
       //THE LINE BELOW BASICALLY MEANS THAT IT IS CALCULATING THE PID CONTROLLER VALUE, TRYING TO MAKE THE FIRST VALUE MATCH THE SECOND VALUE
       double turnValue = turningPID.calculate(tX, 0); //CREATE THE PID CONTROLLER, FROM THE STARTING POINT OF THE X OFFSET, AND MOVING TO ZERO
       SmartDashboard.putNumber("TurnValue", turnValue);
-      driveSubsystem.drive(0, 0, turnValue, false, true);
-      }
+      driveSubsystem.drive(0.1, 0, turnValue, false, true);
       
     } 
 
