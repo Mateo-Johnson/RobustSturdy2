@@ -11,6 +11,8 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -36,6 +38,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class DriveSubsystem extends SubsystemBase {
   //CREATE SWERVE MODULES
 
+  public final  SwerveDrivePoseEstimator swerveDrivePoseEstimator;
+  public Rotation2d getHeadingPose2d = Rotation2d.fromDegrees(getHeading());
 
   //THIS IS THE FRONT LEFT MODULE
   private final static SwerveModule frontLeft = new SwerveModule(
@@ -93,6 +97,17 @@ public class DriveSubsystem extends SubsystemBase {
           rearRight.getPosition()
       });
 
+      public SwerveModulePosition[] getModulePositions() {
+        SwerveModulePosition[] modulePositions = {
+            frontLeft.getPosition(),
+            frontRight.getPosition(),
+            rearLeft.getPosition(),
+            rearRight.getPosition()
+        };
+        return modulePositions;
+    }
+
+
 
   //THIS IS THE CHOOSER FOR THE AUTO OPTIONS
 
@@ -119,6 +134,16 @@ public class DriveSubsystem extends SubsystemBase {
       ),
       null, this //REFERENCE TO THIS SUBSYSTEM TO SET REQUIREMENTS
     );
+
+    swerveDrivePoseEstimator = new SwerveDrivePoseEstimator(
+      DriveConstants.DriveKinematics, 
+      getHeadingPose2d, 
+      getModulePositions(), 
+      new Pose2d(new Translation2d(0, 0), 
+      Rotation2d.fromDegrees(0))); // x,y,heading in radians; Vision measurement std dev, higher=less weight
+
+      
+
   }
 
       
@@ -127,10 +152,12 @@ public class DriveSubsystem extends SubsystemBase {
   public static double bR = rearLeft.getRawTurnEncoder();
   public static double bL = rearRight.getRawTurnEncoder();
 
-
-
+  
   @Override
   public void periodic() {
+    swerveDrivePoseEstimator.update(getHeadingPose2d, getModulePositions()); //THIS ONE UPDATES THE ESTIMATED POSE OF SWERVE
+    swerveDrivePoseEstimator.updateWithTime(DriveConstants.currentTimeSeconds, getHeadingPose2d, getModulePositions()); //THIS ONE UPDATES THE ESTIMATED POSE AT AN EXACT TIME
+
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = table.getEntry("tx");
     double tX = tx.getDouble(0.0);

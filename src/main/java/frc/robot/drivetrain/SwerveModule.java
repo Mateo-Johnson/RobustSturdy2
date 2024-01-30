@@ -132,7 +132,7 @@ public class SwerveModule {
    * @return THE CURRENT MODULE STATE
    */
   public SwerveModuleState getState() {
-    //IDK WHAT THIS ONE DOES MAYBE GETS THE MODULE STATE IDK
+    //THIS ONE GETS 
     return new SwerveModuleState(drivingEncoder.getVelocity(),
         new Rotation2d(turningEncoder.getPosition() - chassisAngularOffset));
   }

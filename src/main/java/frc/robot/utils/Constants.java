@@ -6,6 +6,7 @@
 package frc.robot.utils;
 
 
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -13,6 +14,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.I2C;
 
 
 /**
@@ -38,6 +40,11 @@ public final class Constants {
 
   }
   public static final class DriveConstants {
+
+    //TIME THINGS
+    public static long currentTimeMillis = System.currentTimeMillis(); //THE TIME IN MILLISECONDS
+    public static long currentTimeSeconds = currentTimeMillis / 1000; //THE TIME IN SECONDS
+
     //THIS IS HOW FAR THE ACTUAL ANGLE CAN BE FROM THE EST. ANGLE WITHOUT IT GETTING ANGRY
     public static final double turnToleranceDegrees = 2.0;
     public static double translationToleranceMeters = 2.0;
@@ -49,6 +56,9 @@ public final class Constants {
     public static final double directionSlewRate = 1.2; //PERCENT PER SECOND (PPS) (1=100%)
     public static final double magnitudeSlewRate = 1.8; //PERCENT PER SECOND (PPS) (1=100%)
     public static final double rotationalSlewRate = 2.0; //PERCENT PER SECOND (PPS) (1=100%)
+
+    public static final double encCountsPerRev = 4096;
+    public static final double wheelDiamIn = 3;
 
 
     //CHASSIS CONFIG
@@ -71,9 +81,8 @@ public final class Constants {
  
 
 
-
+    //---------------------DECLARATIONS FOR PHYSICAL PLACEMENTS/WIRINGS OF THINGS-----------------------------//
     //SPARK MAX CAN IDS
-
     //FRONT LEFT MODULE
     public static final int frontLeftDrivingCanId = 8;
     public static final int frontLeftTurningCanId = 9;
@@ -88,6 +97,19 @@ public final class Constants {
     public static final int rearRightTurningCanId = 2;
     //IS THE GYRO REVERSED??????
     public static final boolean gyroReversed = false;
+    //RIGHT AND LEFT NEO 55OS FOR INTAKE
+    public static final int rightIntakeCanId = 11;
+    public static final int leftIntakeCanId = 12;
+    //RIGHT AND LEFT UNGEARBOXED NEOS FOR OUTTAKE
+    public static final int rightOuttakeCanId = 13;
+    public static final int leftOuttakeCanId = 14;
+    //RIGHT AND LEFT TORQUE GEARBOXED NEOS FOR ARM MOVEMENT
+    public static final int leftArmMotor = 15;
+    public static final int rightArmMotor = 16;
+
+    //THE I2C PORT FOR THE COLOR SENSOR
+    public static final I2C.Port I2CPort = I2C.Port.kOnboard;
+    public static final ColorSensorV3 colorSensor = new ColorSensorV3(I2CPort);
 
 
    
