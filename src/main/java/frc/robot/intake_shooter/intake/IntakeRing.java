@@ -41,8 +41,10 @@ public class IntakeRing extends CommandBase {
     colorSensor.getRawColor();
     colorMatcher.matchClosestColor(detectedColor);
 
-    if (match.color == orange) {
+    if (match.color != orange) {
       runIntake(1);
+    } else if (match.color == orange) {
+      runIntake(0);
     }
 
   }
