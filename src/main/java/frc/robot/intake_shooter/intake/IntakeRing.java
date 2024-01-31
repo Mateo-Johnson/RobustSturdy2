@@ -37,6 +37,8 @@ public class IntakeRing extends CommandBase {
   @Override
   public void execute() {
     Color detectedColor = colorSensor.getColor(); //DETECT THE COLOR FROM THE COLOR SENSOR
+
+    colorMatcher.setConfidenceThreshold(0.8);
     ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
     colorSensor.getRawColor();
     colorMatcher.matchClosestColor(detectedColor);
@@ -60,7 +62,6 @@ public class IntakeRing extends CommandBase {
   public boolean isFinished() {
     return false;
   }
-
 
   public void runIntake(double speed) {
     rightIntake.set(speed);
