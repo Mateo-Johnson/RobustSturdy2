@@ -8,8 +8,6 @@ package frc.robot.utils;
 
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMax.IdleMode;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -29,6 +27,8 @@ import edu.wpi.first.wpilibj.I2C;
  * wherever the
  * constants are needed, to reduce verbosity.
  */
+
+
 public final class Constants {
   public static final class FieldConstants {
     //DEFINE FIELD DIMENSIONS
@@ -82,7 +82,25 @@ public final class Constants {
 
 
     //---------------------DECLARATIONS FOR PHYSICAL PLACEMENTS/WIRINGS OF THINGS-----------------------------//
-    //SPARK MAX CAN IDS
+    /*EYO THIS IS THE KEY FOR THE MOTOR SPARKMAXES IF YOU NEED THEM THEY SHOULD ALL BE RIGHT HERE
+     * MOTORS
+     * 2 - REAR RIGHT SWERVE TURNING (NEEDS ENCODER)
+     * 3 - REAR RIGHT SWERVE DRIVING
+     * 4 - REAR LEFT SWERVE TURNING (NEEDS ENCODER)
+     * 5 - REAR LEFT SWERVE DRIVING
+     * 6 - FRONT RIGHT SWERVE TURNING (NEEDS ENCODER)
+     * 7 - FRONT RIGHT SWERVE DRIVING
+     * 8 - FRONT LEFT SWERVE DRIVING
+     * 9 - FRONT LEFT SWERVE TURNING (NEEDS ENCODER)
+     * 
+     * 11 - LEFT ARM ROTATION MOTOR 
+     * 12 - RIGHT ARM ROTATION MOTOR
+     * 
+     * 21 - LEFT ARM INTAKE MOTOR
+     * 22 - RIGHT ARM INTAKE MOTOR
+     * 23 - LEFT ARM OUTTAKE MOTOR
+     * 24 - RIGHT ARM OUTTAKE MOTOR
+    */
     //FRONT LEFT MODULE
     public static final int frontLeftDrivingCanId = 8;
     public static final int frontLeftTurningCanId = 9;
