@@ -1,4 +1,4 @@
-package frc.robot.intake_shooter;
+package frc.robot.arm.intake_shooter;
 
 public class Intake_shooter {
     public void runIntake() {

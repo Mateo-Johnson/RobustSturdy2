@@ -5,8 +5,11 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.drivetrain.DriveSubsystem;
 import frc.robot.drivetrain.commands.TurnToAngle;
@@ -18,21 +21,21 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 public class RobotContainer {
   //SUBSYSTEMS
   private final DriveSubsystem drivetrain = new DriveSubsystem();
+  
 
   //DRIVER CONTROLLERS
   public static CommandXboxController primaryDriver = new CommandXboxController(0);
   public static CommandXboxController secondaryDriver = new CommandXboxController(1);
+
   //SENDABLECHOOSER FOR AUTO
   private SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
 
-    // autoChooser = new SendableChooser<>(); //THIS CREATES THE CHOICES FOR AUTOS AND PUSHES THEM TO SMARTDASHBOARD\
-    // autoChooser = AutoBuilder.buildAutoChooser();
-    // SmartDashboard.putData("Auto Chooser", autoChooser); //SEND THE DATA TO SMARTDASHBOARD
-    // autoChooser = AutoBuilder.buildAutoChooser("Default Path"); //SPECIFY THE DEFAULT AUTO BY ITS NAME
-
     configureButtonBindings(); //CONFIGURE BINDINGS
+
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
 
     ///CONFIGURE DEFAULT COMMANDS
     drivetrain.setDefaultCommand(
@@ -55,8 +58,6 @@ public class RobotContainer {
         .whileTrue(new RunCommand(
             () -> drivetrain.setWheelsX(),
             drivetrain));
-
-  
 
     primaryDriver.a()
         .whileTrue(new TurnToAngle

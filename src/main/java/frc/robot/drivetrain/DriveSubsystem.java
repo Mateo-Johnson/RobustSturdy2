@@ -27,11 +27,9 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utils.SwerveUtils;
 import frc.robot.utils.Constants.DriveConstants;
-import frc.robot.vision.Vision;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -135,6 +133,9 @@ public class DriveSubsystem extends SubsystemBase {
       null, this //REFERENCE TO THIS SUBSYSTEM TO SET REQUIREMENTS
     );
 
+
+
+    
     swerveDrivePoseEstimator = new SwerveDrivePoseEstimator(
       DriveConstants.DriveKinematics, 
       getHeadingPose2d, 
@@ -214,104 +215,6 @@ public class DriveSubsystem extends SubsystemBase {
         },
         pose);
   }
-
-public void evadeMovingTargets() {
-  //CHECK IF TARGET DETECTED
-  if (Vision.tV == true) {
-      double targetX = Vision.tX; //X OFFSET
-
-      //CALCULATE DESIRED MOVEMENT
-      double xSpeed = calculateXSpeed(targetX);
-      double ySpeed = calculateYSpeed(targetX);
-
-      //CALCULATE TARGET MOVEMENT DIRECTION
-      double targetMovementDirection = calculateTargetMovementDirection(targetX);
-
-      //EVADE TARGET BY MOVING IN OPPOSITE DIRECTION
-      evadeTarget(xSpeed, ySpeed, targetMovementDirection);
-
-      //UPDATE PREVIOUS VALUES
-      prevTX = targetX;
-      prevTime2 = Timer.getFPGATimestamp();
-  }
-}
-
-//CALCULATE TARGET MOVEMENT DIRECTION BASED ON TX OVER TIME
-private double calculateTargetMovementDirection(double targetX) {
-  double deltaTime = Timer.getFPGATimestamp() - prevTime2;
-  double deltaTX = targetX - prevTX;
-
-  //CALCULATE TARGET MOVEMENT DIRECTION BASED ON ARCTANGENT
-  return Math.atan2(deltaTX, deltaTime);
-}
-
-//EVADE THE TARGET BY MOVING OPPOSITE
-private void evadeTarget(double xSpeed, double ySpeed, double targetMovementDirection) {
-  //MOVE IN THE OPPOSITE DIRECTION OF THE OBSTACLE
-  double evasionFactor = 0.5;  //THIS IS HOW MUCH WE WANT TO EVADE BY
-  double adjustedXSpeed = -xSpeed * evasionFactor;
-  double adjustedYSpeed = -ySpeed * evasionFactor;
-
-  //ROTATE THE ADJUSTED SPEEDS BASED ON THE TARGET'S MOVEMENT DIRECTION
-  double rotatedXSpeed = adjustedXSpeed * Math.cos(targetMovementDirection) - adjustedYSpeed * Math.sin(targetMovementDirection);
-  double rotatedYSpeed = adjustedXSpeed * Math.sin(targetMovementDirection) + adjustedYSpeed * Math.cos(targetMovementDirection);
-
-  //DRIVE WITH THE ADJUSTED AND ROTATED SPEEDS 
-  drive(rotatedYSpeed, rotatedXSpeed, 0.0, false, true);
-}
-
-//METHOD TO CALCULATE X-AXIS SPEED BASED ON TARGET X OFFSET AND DIRECTION
-private double calculateXSpeed(double targetX) {
-  //PROPORTIONAL CONTROL: ADJUST THE X-AXIS SPEED PROPORTIONALLY TO THE TARGET X OFFSET
-  double proportionalFactor = 0.02;  //ADJUST THE COEFFICIENT BASED ON YOUR ROBOT'S BEHAVIOR
-
-  //CALCULATE THE CHANGE IN TX OVER TIME TO DETERMINE DIRECTION
-  double deltaTime = Timer.getFPGATimestamp() - prevTime2;
-  double deltaTX = targetX - prevTX;
-
-  //DETERMINE THE DIRECTION BASED ON THE SIGN OF DELTATX
-  int direction = (deltaTX > 0) ? 1 : -1;
-
-  //ADJUST THE X-AXIS SPEED BASED ON DIRECTION
-  return direction * targetX * proportionalFactor * deltaTime;
-}
-
-//CALCULATE Y-AXIS SPEED BASED ON TARGET X OFFSET
-private double calculateYSpeed(double targetX) {
-  //PROPORTIONAL CONTROL: ADJUST THE Y-AXIS SPEED PROPORTIONALLY TO THE TARGET X OFFSET
-  double proportionalFactor = 0.02;  //ADJUST THE COEFFICIENT BASED ON ROBOT BEHAVIOR 
-  return targetX * proportionalFactor;
-}
-
-
-
-public void moveToPose2d(Pose2d targetPose, double speedMetersPerSecond, double rotationDegreesPerSecond) {
-  //GET HEADING BEFORE THE MOVE
-  double initialHeading = getHeading();
-
-  //CALCULATE THE MOVEMENT AND ROTATION COMPONENTS OF THE POSITION
-  Translation2d deltaTranslation = targetPose.getTranslation().minus(getPose().getTranslation());
-  Rotation2d targetAngle = targetPose.getRotation().minus(Rotation2d.fromDegrees(initialHeading));
-
-  //SET DESIRED STATE FOR TRANSLATION AND ROTATION
-  SwerveModuleState translationState = new SwerveModuleState(speedMetersPerSecond, deltaTranslation.getAngle());
-  SwerveModuleState rotationState = new SwerveModuleState(0.0, targetAngle);
-  SwerveModuleState[] desiredStates = {translationState, translationState, translationState, rotationState};
-
-  //SET THE DESIRED MODULE STATES
-  setModuleStates(desiredStates);
-
-  //WAIT UNTIL IT HAS REACHED THE TARGET POSITION
-  while (Math.abs(getPose().getTranslation().getX() - targetPose.getTranslation().getX()) > DriveConstants.translationToleranceMeters
-          || Math.abs(getPose().getTranslation().getY() - targetPose.getTranslation().getY()) > DriveConstants.translationToleranceMeters
-          || Math.abs(getHeading() - initialHeading - targetAngle.getDegrees()) > DriveConstants.turnToleranceDegrees) {
-          Timer.delay(0.02);
-  }
-
-  //STOP ROBOT AFTER REACHING TARGET POSE
-  setWheelsX();
-
-}
 
 
   /**
