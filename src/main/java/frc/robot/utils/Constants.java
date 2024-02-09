@@ -6,8 +6,13 @@
 package frc.robot.utils;
 
 
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -39,6 +44,7 @@ public final class Constants {
     public static final double origin_x = 0.0;
 
   }
+
   public static final class DriveConstants {
 
     //TIME THINGS
@@ -63,9 +69,9 @@ public final class Constants {
 
     //CHASSIS CONFIG
     public static final double trackWidth = Units.inchesToMeters(30);
-    //DISTANCE BETWEEN CENTERS OF RIGHT AND LEFT WHEELS
+    //DISTANCE BETWEEN CENTERS OF RIGHT AND LEFT WHEELS ↑
     public static final double wheelBase = Units.inchesToMeters(28);
-    //DISTANCE BETWEEN FRONT AND BACK WHEELS
+    //DISTANCE BETWEEN FRONT AND BACK WHEELS ↑ 🤪
     public static final SwerveDriveKinematics DriveKinematics = new SwerveDriveKinematics(
         new Translation2d(wheelBase / 2, trackWidth / 2),
         new Translation2d(wheelBase / 2, -trackWidth / 2),
@@ -119,18 +125,25 @@ public final class Constants {
     public static final int rightIntakeCanId = 11;
     public static final int leftIntakeCanId = 12;
     //RIGHT AND LEFT UNGEARBOXED NEOS FOR OUTTAKE
-    public static final int rightOuttakeCanId = 13;
-    public static final int leftOuttakeCanId = 14;
+    public static final int rightOuttakeCanId = 23;
+    public static final int leftOuttakeCanId = 24;
     //RIGHT AND LEFT TORQUE GEARBOXED NEOS FOR ARM MOVEMENT
-    public static final int leftArmMotor = 15;
-    public static final int rightArmMotor = 16;
+    public static final int leftArmMotorCanId = 35;
+    public static final int rightArmMotorCanId = 36;
+
+    public static CANSparkMax rightIntake = new CANSparkMax(DriveConstants.rightIntakeCanId, MotorType.kBrushless);    
+    public static CANSparkMax leftIntake = new CANSparkMax(DriveConstants.leftIntakeCanId, MotorType.kBrushless); 
+    public static CANSparkMax rightOuttake = new CANSparkMax(DriveConstants.rightOuttakeCanId, MotorType.kBrushless);    
+    public static CANSparkMax leftOuttake = new CANSparkMax(DriveConstants.leftOuttakeCanId, MotorType.kBrushless); 
+    public static CANSparkMax leftArm = new CANSparkMax(DriveConstants.leftArmMotorCanId, MotorType.kBrushless);    
+    public static CANSparkMax rightArm = new CANSparkMax(DriveConstants.rightArmMotorCanId, MotorType.kBrushless); 
+
+    public static final AbsoluteEncoder armEncoder = rightArm.getAbsoluteEncoder(Type.kDutyCycle);
 
     //THE I2C PORT FOR THE COLOR SENSOR
     public static final I2C.Port I2CPort = I2C.Port.kOnboard;
     public static final ColorSensorV3 colorSensor = new ColorSensorV3(I2CPort);
 
-
-   
   }
 
 
@@ -145,9 +158,9 @@ public final class Constants {
     //THIS CAN BE 12, 13 OR 14 CONSULT MECHANICAL BEFORE CHANGING, ASK FOR MODULE PINION TEETH NUMBER (IDEALLY ASK AHMED A.)
     public static final int drivingMotorPinionTeeth = medium;
 
-
+    public static final boolean so_true = true;
     //OUTPUT SHAFT ROTATES OPPOSITE OF STEERING MOTOR SO INVERT
-    public static final boolean turningEncoderInverted = true;
+    public static final boolean turningEncoderInverted = so_true;
 
 
     //CALCULATIONS FOR DRIVE MOTOR CONVERSION FACTORS AND FEED FORWARD

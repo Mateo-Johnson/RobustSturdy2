@@ -1,14 +1,9 @@
 package frc.robot.vision;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import java.net.URL;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import frc.robot.utils.LimelightLib;
-import frc.robot.utils.LimelightLib.LimelightResults;
 
 public class Vision extends SubsystemBase {
 
