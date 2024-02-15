@@ -17,7 +17,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 
 /**
@@ -131,6 +133,9 @@ public final class Constants {
     public static final int leftArmMotorCanId = 35;
     public static final int rightArmMotorCanId = 36;
 
+    public static final int rightSolenoidChannelID = 0;
+    public static final int wrongSolenoidChannelID = 1;
+
     public static CANSparkMax rightIntake = new CANSparkMax(DriveConstants.rightIntakeCanId, MotorType.kBrushless);    
     public static CANSparkMax leftIntake = new CANSparkMax(DriveConstants.leftIntakeCanId, MotorType.kBrushless); 
     public static CANSparkMax rightOuttake = new CANSparkMax(DriveConstants.rightOuttakeCanId, MotorType.kBrushless);    
@@ -138,11 +143,19 @@ public final class Constants {
     public static CANSparkMax leftArm = new CANSparkMax(DriveConstants.leftArmMotorCanId, MotorType.kBrushless);    
     public static CANSparkMax rightArm = new CANSparkMax(DriveConstants.rightArmMotorCanId, MotorType.kBrushless); 
 
+
     public static final AbsoluteEncoder armEncoder = rightArm.getAbsoluteEncoder(Type.kDutyCycle);
 
     //THE I2C PORT FOR THE COLOR SENSOR
     public static final I2C.Port I2CPort = I2C.Port.kOnboard;
     public static final ColorSensorV3 colorSensor = new ColorSensorV3(I2CPort);
+
+    
+
+    public static Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+    public static double compressorCurrent = compressor.getCurrent(); //THE CURRENT DRAW OF THE COMPRESSOR
+    public static boolean compressorOn = compressor.isEnabled(); //WHETHER THE COMPRESSOR IS ON
+    public static boolean compressorPressure = compressor.getPressureSwitchValue(); //WHETHER THE TANK IS FULL OR NOT
 
   }
 
