@@ -16,11 +16,11 @@ public class ShootRingIndiscriminately extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
   }
   //OUTTAKE
-  public static final CANSparkMax OUT1 = DriveConstants.leftOuttake;
-  public static final CANSparkMax OUT2 = DriveConstants.rightOuttake;
-  public static final CANSparkMax IN1 = DriveConstants.rightIntake;
-  public static final CANSparkMax IN2 = DriveConstants.leftIntake;
-  private RelativeEncoder shooterEncoder = OUT1.getEncoder();
+  public static final CANSparkMax OUTR = DriveConstants.leftOuttake;
+  public static final CANSparkMax OUTL = DriveConstants.rightOuttake;
+  public static final CANSparkMax INR = DriveConstants.rightIntake;
+  public static final CANSparkMax INL = DriveConstants.leftIntake;
+  private RelativeEncoder shooterEncoder = OUTL.getEncoder();
 
 
 
@@ -37,15 +37,15 @@ public class ShootRingIndiscriminately extends CommandBase {
 
     SmartDashboard.putNumber("silly", shooterEncoder.getVelocity());
     if (shooterEncoder.getVelocity() >= 19) { //IF THE MOTORS ARE SPINNING FAST ENOUGH 
-      OUT1.set(5); //SET UP OUTTAKE MOTOR 1 FOR SHOOTING
-      OUT2.set(5); //SET UP OUTTAKE MOTOR 2 FOR SHOOTING
-      IN1.set(0.5); //USE INTAKE MOTOR 1 TO FEED INTO OUTTAKE
-      IN2.set(0.5); //USE INTAKE MOTOR 2 TO FEED INTO OUTTAKE
+      OUTL.set(5); //SET UP OUTTAKE MOTOR 1 FOR SHOOTING
+      OUTR.set(5); //SET UP OUTTAKE MOTOR 2 FOR SHOOTING
+      INL.set(0.5); //USE INTAKE MOTOR 1 TO FEED INTO OUTTAKE
+      INR.set(0.5); //USE INTAKE MOTOR 2 TO FEED INTO OUTTAKE
       //ADD A METHOD MAKE THE BOTTOM LIGHTS GREEN TO SHOW THAT ITS READY TO SHOOT
 
     } else if (shooterEncoder.getVelocity() <= 19) { //IF THE MOTORS ARE NOT AT THE RIGHT SPEED
-      OUT1.set(5); //MAKE OUTTAKE MOTOR 1 GO TO RIGHT SPEED
-      OUT2.set(5); //MAKE OUTTAKE MOTOR 1 GO TO RIGHT SPEED
+      OUTL.set(5); //MAKE OUTTAKE MOTOR 1 GO TO RIGHT SPEED
+      OUTR.set(5); //MAKE OUTTAKE MOTOR 1 GO TO RIGHT SPEED
       //ADD A METHOD MAKE THE BOTTOM LIGHTS RED TO SHOW THAT ITS NOT READY TO SHOOT
     }
   }
@@ -54,14 +54,10 @@ public class ShootRingIndiscriminately extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    OUT1.set(0);
-    OUT2.set(0);
-    IN1.set(0);
-    IN2.set(0);
-  }
-
-  public void silly() {
-    
+    OUTR.set(0);
+    OUTL.set(0);
+    INR.set(0);
+    INL.set(0);
   }
 
   // Returns true when the command should end.

@@ -11,8 +11,10 @@ import frc.robot.utils.Constants.DriveConstants;
 
 public class PurgeRing extends CommandBase {
   /** Creates a new Purge. */
-  public static final CANSparkMax intake1 = DriveConstants.rightIntake;
-  public static final CANSparkMax intake2= DriveConstants.leftIntake;
+  public static final CANSparkMax rightIntake = DriveConstants.rightIntake;
+  public static final CANSparkMax wrongIntake= DriveConstants.leftIntake;
+  public static final CANSparkMax rightOuttake = DriveConstants.rightOuttake;
+  public static final CANSparkMax wrongOuttake = DriveConstants.leftOuttake;
   public PurgeRing() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -24,19 +26,21 @@ public class PurgeRing extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    runIntake(-0.8);
+    runIntakeAndOuttake(-0.8);
   }
 
     //FUNCTIONS FOR SIMPLICITY
-    public void runIntake(double speed) {
-      intake1.set(speed);
-      intake2.set(speed);
+    public void runIntakeAndOuttake(double speed) {
+      rightIntake.set(speed);
+      wrongIntake.set(speed);
+      rightOuttake.set(speed);
+      wrongOuttake.set(speed);
     }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    runIntake(0);
+    runIntakeAndOuttake(0);
   }
 
   // Returns true when the command should end.
