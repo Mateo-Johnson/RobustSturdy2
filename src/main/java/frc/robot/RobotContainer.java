@@ -63,6 +63,8 @@ public class RobotContainer {
         .whileTrue(new TurnToAngle
             (drivetrain));
 
+    primaryDriver.y().and(primaryDriver.a()).whileTrue(new TurnToAngle(drivetrain));
+
     primaryDriver.b()
       .whileTrue(new APTAdjust
         (drivetrain));

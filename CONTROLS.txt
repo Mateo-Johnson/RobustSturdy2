@@ -1,0 +1,19 @@
+-- Guide/Key --
+RT - Right Trigger
+LT - Left Trigger
+RB - Right Bumper
+LB - Left Bumper
+Y - Y Button
+X - X Button
+B - B Button
+A - A Button
+RS - Right Stick
+LS - Left Stick
+D-PAD - Directional Pad
+
+- - Actual Controls - -
+LS - Drivetrain Translation
+RS - Drivetrain Rotation
+RB - Intake Ring
+LB - Outtake Ring
+A - Purge Intake & Outtake

@@ -33,8 +33,8 @@ public class Arm {
 
 
     public void armDontMove() {
-        double armSetpoint = armEncoderReading;
-        double turnValue = armPID.calculate(armEncoderReading, armSetpoint);
+        double armSetpoint = armEncoderReading; //SET THE TARGET POSITION TO THE CURRENT POSITION
+        double turnValue = armPID.calculate(armEncoderReading, armSetpoint); //SET THE PID CONTROLLER TO KEEPING THE ARM IN PLACE
         rotateVector(turnValue);
     }
     
