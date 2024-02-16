@@ -43,12 +43,12 @@ public class ShootRingIndiscriminately extends CommandBase {
       OUT2.set(5); //SET UP OUTTAKE MOTOR 2 FOR SHOOTING
       IN1.set(0.5); //USE INTAKE MOTOR 1 TO FEED INTO OUTTAKE
       IN2.set(0.5); //USE INTAKE MOTOR 2 TO FEED INTO OUTTAKE
-      Lights.solidColor(ColorIndex.green);
+      Lights.solidColor(ColorIndex.green); //BOTTOM LIGHTS GO GREEN IF ITS READY TO SHOOT
 
     } else if (shooterEncoder.getVelocity() <= 20) { //IF THE MOTORS ARE NOT AT THE RIGHT SPEED
       OUT1.set(5); //MAKE OUTTAKE MOTOR 1 GO TO RIGHT SPEED
       OUT2.set(5); //MAKE OUTTAKE MOTOR 1 GO TO RIGHT SPEED
-      Lights.solidColor(ColorIndex.red);
+      Lights.solidColor(ColorIndex.red); //BOTTOM LIGHTS GO RED IF ITS NOT READY TO SHOOT
     }
   }
 
