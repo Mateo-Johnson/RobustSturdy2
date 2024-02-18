@@ -26,6 +26,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.WPIUtilJNI;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.utils.SwerveUtils;
@@ -109,29 +110,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   //CREATES A NEW DRIVESUBSYSTEM.
   public DriveSubsystem() {
-
-    AutoBuilder.configureHolonomic(
-      this::getPose, //POSE SUPPLIER
-      this::resetOdometry, //METHOD TO RESET ODOMETRY
-      () -> DriveConstants.DriveKinematics.toChassisSpeeds(
-        frontLeft.getState(),
-        frontRight.getState(),
-        rearLeft.getState(),
-        rearRight.getState()
-      ),
-      (speeds) -> drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, false, false),
-      new HolonomicPathFollowerConfig( //HOLONOMIC PATH FOLLOWER CONFIG
-          new PIDConstants(5.0, 0.0, 0.0), //TRANSLATION PID CONSTANTS
-          new PIDConstants(5.0, 0.0, 0.0), //ROTATION PID CONSTANTS
-          4.5, //MAX SPEED IN M/S
-          0.4, //DISTANCE FROM CENTER TO FURTHEST MODULE
-          new ReplanningConfig() //DEFAULT PATH REPLANNING CONFIG
-      ),
-      null, this //REFERENCE TO THIS SUBSYSTEM TO SET REQUIREMENTS
-    );
-
-
-
     
     swerveDrivePoseEstimator = new SwerveDrivePoseEstimator(
       DriveConstants.DriveKinematics, 
@@ -139,6 +117,34 @@ public class DriveSubsystem extends SubsystemBase {
       getModulePositions(), 
       new Pose2d(new Translation2d(0, 0), 
       Rotation2d.fromDegrees(0))); // x,y,heading in radians; Vision measurement std dev, higher=less weight
+
+      // Configure AutoBuilder last
+    AutoBuilder.configureHolonomic(
+            this::getPose, // Robot pose supplier
+            this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+            () -> DriveConstants.DriveKinematics.toChassisSpeeds(
+              frontLeft.getState(), frontRight.getState(), rearLeft.getState(), rearRight.getState()),
+            (speeds) -> drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, false, false),
+            new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                    new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+                    4.5, // Max module speed, in m/s
+                    0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+                    new ReplanningConfig() // Default path replanning config. See the API for the options here
+            ),
+            () -> {
+              // Boolean supplier that controls when the path will be mirrored for the red alliance
+              // This will flip the path being followed to the red side of the field.
+              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+              var alliance = DriverStation.getAlliance();
+              if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+              }
+              return false;
+            },
+            this // Reference to this subsystem to set requirements
+    );
 
       
 
