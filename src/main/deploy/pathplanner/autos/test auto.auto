@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.1027996500437447,
+      "y": 3.3732108251253545
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "the one ring"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "the one ring pt 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeRing"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
