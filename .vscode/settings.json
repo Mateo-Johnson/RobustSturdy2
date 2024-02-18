@@ -33,6 +33,7 @@
     "DRIVESUBSYSTEM",
     "HOLONOMIC",
     "NAVX",
+    "Odometry",
     "SMARTDASHBOARD",
     "SPARKMAXES"
   ]
