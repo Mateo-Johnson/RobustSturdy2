@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.utils.Constants.DriveConstants;
 
 
-public class Climber extends CommandBase {
+public class Climb extends CommandBase {
   /** Creates a new IntakeRing. */
   Solenoid rightSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, DriveConstants.rightSolenoidChannelID);
   Solenoid wrongSolenoid = new Solenoid(PneumaticsModuleType.CTREPCM, DriveConstants.wrongSolenoidChannelID);
@@ -17,7 +17,7 @@ public class Climber extends CommandBase {
   boolean compressorOn = DriveConstants.compressorOn; //IS THE COMPRESSOR ON
   boolean compressorPressure = DriveConstants.compressorPressure; //RETURNS TRUE WHEN THE COMPRESSOR IS FULL
 
-  public Climber() {
+  public Climb() {
     // Use addRequirements() here to declare subsystem dependencies.
 
     //BASICS OF SOLENOIDS: BASICALLY, THE COMPRESSOR TAKES IN  AIR AND COMPRESSES IT. THE SOLENOIDS ARE LIKE LITTLE GATES, 

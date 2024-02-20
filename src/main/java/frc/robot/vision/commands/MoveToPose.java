@@ -9,11 +9,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.drivetrain.DriveSubsystem;
 
 public class MoveToPose extends CommandBase {
-  private final DriveSubsystem driveSubsystem;
   /** Creates a new MoveToPose. */
   public MoveToPose(DriveSubsystem driveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.driveSubsystem = driveSubsystem;
     addRequirements(driveSubsystem);
 
     

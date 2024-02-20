@@ -8,6 +8,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.lights.ColorIndex;
+import frc.robot.lights.Lights;
 import frc.robot.utils.Constants.DriveConstants;
 
 public class ShootRingIndiscriminately extends CommandBase {
@@ -37,15 +39,15 @@ public class ShootRingIndiscriminately extends CommandBase {
 
     SmartDashboard.putNumber("silly", shooterEncoder.getVelocity());
     if (shooterEncoder.getVelocity() >= 19) { //IF THE MOTORS ARE SPINNING FAST ENOUGH 
-      OUTL.set(5); //SET UP OUTTAKE MOTOR 1 FOR SHOOTING
-      OUTR.set(5); //SET UP OUTTAKE MOTOR 2 FOR SHOOTING
-      INL.set(-0.5); //USE INTAKE MOTOR 1 TO FEED INTO OUTTAKE
-      INR.set(0.5); //USE INTAKE MOTOR 2 TO FEED INTO OUTTAKE
+      OUT1.set(5); //SET UP OUTTAKE MOTOR 1 FOR SHOOTING
+      OUT2.set(5); //SET UP OUTTAKE MOTOR 2 FOR SHOOTING
+      IN1.set(0.5); //USE INTAKE MOTOR 1 TO FEED INTO OUTTAKE
+      IN2.set(0.5); //USE INTAKE MOTOR 2 TO FEED INTO OUTTAKE
       //ADD A METHOD MAKE THE BOTTOM LIGHTS GREEN TO SHOW THAT ITS READY TO SHOOT
 
     } else if (shooterEncoder.getVelocity() <= 19) { //IF THE MOTORS ARE NOT AT THE RIGHT SPEED
-      OUTL.set(5); //MAKE OUTTAKE MOTOR 1 GO TO RIGHT SPEED
-      OUTR.set(5); //MAKE OUTTAKE MOTOR 1 GO TO RIGHT SPEED
+      OUT1.set(5); //MAKE OUTTAKE MOTOR 1 GO TO RIGHT SPEED
+      OUT2.set(5); //MAKE OUTTAKE MOTOR 1 GO TO RIGHT SPEED
       //ADD A METHOD MAKE THE BOTTOM LIGHTS RED TO SHOW THAT ITS NOT READY TO SHOOT
     }
   }

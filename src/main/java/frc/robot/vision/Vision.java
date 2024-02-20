@@ -3,6 +3,7 @@ package frc.robot.vision;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import frc.robot.utils.LimelightLib;
 
 public class Vision extends SubsystemBase {
@@ -38,6 +39,13 @@ public static double[] camPose2dRobotSpace = LimelightLib.getCameraPose_TargetSp
 public static Pose3d targetPose3d = LimelightLib.getTargetPose3d_RobotSpace(limelightName);
 public static double targetID = LimelightLib.getFiducialID(limelightName);
 public static double[] targetColor = LimelightLib.getTargetColor(limelightName);
+
+// Extract the position of the target from the Pose3d object
+Translation3d targetPosition = targetPose3d.getTranslation();
+
+// Calculate the distance between the robot and the target using the position of the target
+double distance = Math.sqrt(Math.pow(targetPosition.getX(), 2) + Math.pow(targetPosition.getY(), 2) + Math.pow(targetPosition.getZ(), 2));
+
 
 //RANDOM OTHER SHIT GETTERS
 public static double pipelineIndex = LimelightLib.getCurrentPipelineIndex(limelightName);

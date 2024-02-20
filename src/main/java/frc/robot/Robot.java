@@ -5,10 +5,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.drivetrain.DriveSubsystem;
 
 
 
@@ -23,6 +25,8 @@ public class Robot extends TimedRobot {
 
   private Command autonomousCommand;
   private RobotContainer robotContainer; 
+  private DriveSubsystem driveSubsystem;
+  
 
 
   /**
@@ -34,6 +38,13 @@ public class Robot extends TimedRobot {
     //Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     //autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
+    driveSubsystem = new DriveSubsystem();
+
+    driveSubsystem.swerveDrivePoseEstimator.resetPosition(
+      driveSubsystem.getHeadingPose2d, 
+      driveSubsystem.getModulePositions(), 
+      new Pose2d(new Translation2d(0, 0), null)
+      );
 
     //chooser.setDefaultOption("Default Auto", defaultAuto);
     //chooser.addOption("My Auto 1", customAuto1);
@@ -56,11 +67,15 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+
+  }
 
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    
+  }
 
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */

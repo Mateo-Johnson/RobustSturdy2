@@ -28,10 +28,12 @@
   "java.test.defaultConfig": "WPIlibUnitTests",
   "cSpell.words": [
     "AHRS",
+    "CTREPCM",
     "DELTATX",
     "DRIVESUBSYSTEM",
     "HOLONOMIC",
     "NAVX",
+    "Odometry",
     "SMARTDASHBOARD",
     "SPARKMAXES"
   ]

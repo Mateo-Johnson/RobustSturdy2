@@ -6,7 +6,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import frc.robot.utils.Constants.DriveConstants;
+import frc.robot.vision.Vision;
 
 public class Arm {
 
@@ -19,6 +22,11 @@ public class Arm {
     double aD = 0;
     PIDController armPID = new PIDController(aP, aI, aD);
     PIDConstants armPIDConstants = new PIDConstants(aP, aI, aD);
+    public static double ARM_LENGTH = 24.0; // Length of the arm from pivot point to shooter mechanism (inches)
+    public static Pose3d targetPose3d = Vision.targetPose3d;
+    public static Translation3d targetPosition = targetPose3d.getTranslation(); // Extract the position of the target from the Pose3d object
+    public static double distance = Math.sqrt(Math.pow(targetPosition.getX(), 2) + Math.pow(targetPosition.getY(), 2) + Math.pow(targetPosition.getZ(), 2));
+
 
     public void rotateToDegrees(double degree) {
         double armSetpoint = degree;

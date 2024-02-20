@@ -6,18 +6,15 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.arm.MoveArm;
-import frc.robot.arm.MoveArmBackwards;
-import frc.robot.arm.intake_shooter.intake.IntakeRing;
-import frc.robot.arm.intake_shooter.intake.PurgeRing;
-import frc.robot.arm.intake_shooter.shooter.ShootRingIndiscriminately;
 import frc.robot.drivetrain.DriveSubsystem;
 import frc.robot.drivetrain.commands.TurnToAngle;
+import frc.robot.lights.SetLightsColor;
 import frc.robot.utils.Constants.ControllerConstants;
 import frc.robot.vision.commands.APTAdjust;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -37,10 +34,17 @@ public class RobotContainer {
 
   public RobotContainer() {
 
+    NamedCommands.registerCommand("IntakeRing", new IntakeRing());
+    NamedCommands.registerCommand("PurgeRing", new PurgeRing());
+    NamedCommands.registerCommand("ScoreAmp", new ScoreAmp());
+    NamedCommands.registerCommand("ScoreSpeaker", new ScoreSpeaker());
+    NamedCommands.registerCommand("Climb", new Climb());
+    NamedCommands.registerCommand("SetLightsColor", new SetLightsColor());
+
     configureButtonBindings(); //CONFIGURE BINDINGS
 
-    // autoChooser = AutoBuilder.buildAutoChooser();
-    // SmartDashboard.putData("Auto Chooser", autoChooser);
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
 
     ///CONFIGURE DEFAULT COMMANDS
     drivetrain.setDefaultCommand(
