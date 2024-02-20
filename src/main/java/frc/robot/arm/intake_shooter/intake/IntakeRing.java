@@ -103,7 +103,7 @@ public class IntakeRing extends CommandBase {
   //FUNCTIONS FOR SIMPLICITY
   public void runIntake(double speed) {
     intake1.set(speed);
-    intake2.set(speed);
+    intake2.set(-speed);
   }
 
   public void stopIntake(){

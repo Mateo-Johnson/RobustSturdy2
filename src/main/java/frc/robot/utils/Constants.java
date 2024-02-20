@@ -117,7 +117,7 @@ public final class Constants {
     public static final int rearLeftTurningCanId = 4;
     //FRONT RIGHT MODULE
     public static final int frontRightDrivingCanId = 7;
-    public static final int frontRightTurningCanId = 6;
+    public static final int frontRightTurningCanId = 6; 
     //BACK RIGHT MODULE
     public static final int rearRightDrivingCanId = 3;
     public static final int rearRightTurningCanId = 2;

@@ -11,6 +11,11 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.arm.MoveArm;
+import frc.robot.arm.MoveArmBackwards;
+import frc.robot.arm.intake_shooter.intake.IntakeRing;
+import frc.robot.arm.intake_shooter.intake.PurgeRing;
+import frc.robot.arm.intake_shooter.shooter.ShootRingIndiscriminately;
 import frc.robot.drivetrain.DriveSubsystem;
 import frc.robot.drivetrain.commands.TurnToAngle;
 import frc.robot.utils.Constants.ControllerConstants;
@@ -34,8 +39,8 @@ public class RobotContainer {
 
     configureButtonBindings(); //CONFIGURE BINDINGS
 
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    // autoChooser = AutoBuilder.buildAutoChooser();
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
 
     ///CONFIGURE DEFAULT COMMANDS
     drivetrain.setDefaultCommand(
@@ -59,15 +64,14 @@ public class RobotContainer {
             () -> drivetrain.setWheelsX(),
             drivetrain));
 
-    primaryDriver.a()
-        .whileTrue(new TurnToAngle
-            (drivetrain));
 
-    primaryDriver.y().and(primaryDriver.a()).whileTrue(new TurnToAngle(drivetrain));
+    primaryDriver.a().whileTrue(new MoveArm());
+    primaryDriver.b().whileTrue(new MoveArmBackwards());
+    primaryDriver.rightTrigger().whileTrue(new IntakeRing());
+    primaryDriver.leftTrigger().whileTrue(new ShootRingIndiscriminately());
+    primaryDriver.leftBumper().whileTrue(new PurgeRing());
+    
 
-    primaryDriver.b()
-      .whileTrue(new APTAdjust
-        (drivetrain));
 }
     
 

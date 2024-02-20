@@ -26,7 +26,7 @@ public class Arm {
         rotateVector(turnValue);
     }
 
-    public void rotateVector(double speed) {
+    public static void rotateVector(double speed) {
       leftArm.set(speed);
       rightArm.set(-speed);
     }
