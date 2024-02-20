@@ -4,7 +4,10 @@
 
 package frc.robot.arm.intake_shooter.shooter;
 
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.vision.Vision;
 
 public class ScoreSpeaker extends CommandBase {
   /** Creates a new ScoreSpeaker. */

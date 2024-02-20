@@ -37,7 +37,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class DriveSubsystem extends SubsystemBase {
   //CREATE SWERVE MODULES
 
-  public final  SwerveDrivePoseEstimator swerveDrivePoseEstimator;
+  public final SwerveDrivePoseEstimator swerveDrivePoseEstimator;
   public Rotation2d getHeadingPose2d = Rotation2d.fromDegrees(getHeading());
 
   //THIS IS THE FRONT LEFT MODULE
@@ -158,7 +158,6 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     swerveDrivePoseEstimator.update(getHeadingPose2d, getModulePositions()); //THIS ONE UPDATES THE ESTIMATED POSE OF SWERVE
-    swerveDrivePoseEstimator.updateWithTime(DriveConstants.currentTimeSeconds, getHeadingPose2d, getModulePositions()); //THIS ONE UPDATES THE ESTIMATED POSE AT AN EXACT TIME
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = table.getEntry("tx");
