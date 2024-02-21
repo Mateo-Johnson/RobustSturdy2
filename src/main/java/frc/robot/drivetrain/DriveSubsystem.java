@@ -24,6 +24,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.arm.AlignForShooting;
 import frc.robot.arm.Arm;
 import frc.robot.utils.SwerveUtils;
 import frc.robot.utils.Constants.DriveConstants;
@@ -183,6 +184,8 @@ public class DriveSubsystem extends SubsystemBase {
     AbsoluteEncoder armEncoder = Arm.armEncoder;
     final double armEncoderReading = armEncoder.getPosition();
     SmartDashboard.putNumber("Arm Angle", armEncoderReading);
+
+    SmartDashboard.putNumber("arm angle degrees", AlignForShooting.degrees);
 
   }
 
