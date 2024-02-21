@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.arm.MoveArm;
 import frc.robot.arm.MoveArmBackwards;
-import frc.robot.arm.PIDARM;
+import frc.robot.arm.AlignForShooting;
 import frc.robot.arm.intake_shooter.intake.IntakeRing;
 import frc.robot.arm.intake_shooter.intake.PurgeRing;
 import frc.robot.arm.intake_shooter.shooter.ScoreAmp;
@@ -75,7 +75,7 @@ public class RobotContainer {
 
     // primaryDriver.a().and(primaryDriver.b()).whileFalse(new PIDARM());
     primaryDriver.a().whileTrue(new MoveArm());
-    primaryDriver.y().whileTrue(new PIDARM(drivetrain));
+    primaryDriver.y().whileTrue(new AlignForShooting(drivetrain));
     primaryDriver.b().whileTrue(new MoveArmBackwards());
     primaryDriver.rightTrigger().whileTrue(new IntakeRing());
     primaryDriver.leftTrigger().whileTrue(new ShootRingIndiscriminately());

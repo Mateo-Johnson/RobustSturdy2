@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.drivetrain.DriveSubsystem;
 
-public class PIDARM extends CommandBase {
+public class AlignForShooting extends CommandBase {
   /** Creates a new MoveArm. */
   public static double initialHeading;
   private final DriveSubsystem driveSubsystem;
@@ -40,7 +40,7 @@ public class PIDARM extends CommandBase {
     //CREATE A PID CONTROLLER WITH THE SPECIFIED CONSTANTS
     PIDController turningPID = new PIDController(tP, tI, tD);
 
-  public PIDARM(DriveSubsystem driveSubsystem) {
+  public AlignForShooting(DriveSubsystem driveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveSubsystem = driveSubsystem;
     addRequirements(driveSubsystem);
