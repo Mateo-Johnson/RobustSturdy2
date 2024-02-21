@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.drivetrain.DriveSubsystem;
 
@@ -67,6 +68,7 @@ public class AlignForShooting extends CommandBase {
     //CODE FOR HOLDING THE ARM IN PLACE
     AbsoluteEncoder armEncoder = Arm.armEncoder;
     double armEncoderReading = armEncoder.getPosition();
+    SmartDashboard.putNumber("arm angle", armEncoderReading);
     double armSetpoint = 0.259;
     double tY = ty.getDouble(0.0);
     double tX = tx.getDouble(0.0);
@@ -75,20 +77,16 @@ public class AlignForShooting extends CommandBase {
     double armValue = armAlignPID.calculate(tY, 5);
     double turnValue1 = turningPID.calculate(tX, 0);
 
-    if (armEncoderReading >= 0.25 && armEncoderReading <= 0.265) { //IF THE ARM IS AT THE RIGHT POSITION
-
     //MOVE THE ARM TO THE SPECIFIC VALUE ABOVE THE APRILTAG
     PIDMoveArm(armValue);
     //ALIGN THE DRIVETRAIN TO THE APRILTAG
     driveSubsystem.drive(0, 0, turnValue1, false, true);
 
-    } else if (armEncoderReading <= 0.25 || armEncoderReading >= 0.265) { //IF THE ARM IS AT THE WRONG POSITION
 
-      //MOVE THE ARM TO THE RIGHT POSITION
-      Arm.leftArm.set(turnValue * 5);
-      Arm.rightArm.set(-turnValue * 5);
+      // //MOVE THE ARM TO THE RIGHT POSITION
+      // Arm.leftArm.set(turnValue * 5);
+      // Arm.rightArm.set(-turnValue * 5);
 
-    }
 
   }
 
