@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.arm.MoveArm;
 import frc.robot.arm.MoveArmBackwards;
+import frc.robot.arm.PIDARM;
 import frc.robot.arm.intake_shooter.intake.IntakeRing;
 import frc.robot.arm.intake_shooter.intake.PurgeRing;
 import frc.robot.arm.intake_shooter.shooter.ScoreAmp;
@@ -49,8 +50,8 @@ public class RobotContainer {
 
     configureButtonBindings(); //CONFIGURE BINDINGS
 
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    // autoChooser = AutoBuilder.buildAutoChooser();
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
 
     ///CONFIGURE DEFAULT COMMANDS
     drivetrain.setDefaultCommand(
@@ -75,7 +76,9 @@ public class RobotContainer {
             drivetrain));
 
 
+    // primaryDriver.a().and(primaryDriver.b()).whileFalse(new PIDARM());
     primaryDriver.a().whileTrue(new MoveArm());
+    primaryDriver.y().whileTrue(new PIDARM(drivetrain));
     primaryDriver.b().whileTrue(new MoveArmBackwards());
     primaryDriver.rightTrigger().whileTrue(new IntakeRing());
     primaryDriver.leftTrigger().whileTrue(new ShootRingIndiscriminately());

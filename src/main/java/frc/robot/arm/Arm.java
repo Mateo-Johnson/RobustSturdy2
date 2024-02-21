@@ -17,10 +17,12 @@ public class Arm {
     public static CANSparkMax rightArm = DriveConstants.rightArm;
     public static AbsoluteEncoder armEncoder = rightArm.getAbsoluteEncoder(Type.kDutyCycle);
     public static double armEncoderReading = armEncoder.getPosition();
-    double aP = 0;
-    double aI = 0;
-    double aD = 0;
-    PIDController armPID = new PIDController(aP, aI, aD);
+
+    static double aP = 0.0001;
+    static double aI = 0;
+    static double aD = 0;
+
+    static PIDController armPID = new PIDController(aP, aI, aD);
     PIDConstants armPIDConstants = new PIDConstants(aP, aI, aD);
     public static double ARM_LENGTH = 24.0; // Length of the arm from pivot point to shooter mechanism (inches)
     public static Pose3d targetPose3d = Vision.targetPose3d;
@@ -28,7 +30,7 @@ public class Arm {
     public static double distance = Math.sqrt(Math.pow(targetPosition.getX(), 2) + Math.pow(targetPosition.getY(), 2) + Math.pow(targetPosition.getZ(), 2));
 
 
-    public void rotateToDegrees(double degree) {
+    public static void rotateToDegrees(double degree) {
         double armSetpoint = degree;
         double turnValue = armPID.calculate(armEncoderReading, armSetpoint);
         rotateVector(turnValue);

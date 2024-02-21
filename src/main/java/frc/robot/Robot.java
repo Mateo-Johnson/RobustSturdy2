@@ -40,11 +40,11 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer();
     driveSubsystem = new DriveSubsystem();
 
-    driveSubsystem.swerveDrivePoseEstimator.resetPosition(
-      driveSubsystem.getHeadingPose2d, 
-      driveSubsystem.getModulePositions(), 
-      new Pose2d(new Translation2d(0, 0), null)
-      );
+    // driveSubsystem.swerveDrivePoseEstimator.resetPosition(
+    //   driveSubsystem.getHeadingPose2d, 
+    //   driveSubsystem.getModulePositions(), 
+    //   new Pose2d(new Translation2d(0, 0), null)
+    //   );
 
     //chooser.setDefaultOption("Default Auto", defaultAuto);
     //chooser.addOption("My Auto 1", customAuto1);

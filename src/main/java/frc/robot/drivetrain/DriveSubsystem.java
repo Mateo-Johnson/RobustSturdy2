@@ -6,11 +6,13 @@
 package frc.robot.drivetrain;
 
 
+import com.fasterxml.jackson.databind.AnnotationIntrospector.ReferenceProperty.Type;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+import com.revrobotics.AbsoluteEncoder;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -29,6 +31,7 @@ import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.arm.Arm;
 import frc.robot.utils.SwerveUtils;
 import frc.robot.utils.Constants.DriveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -118,32 +121,32 @@ public class DriveSubsystem extends SubsystemBase {
       new Pose2d(new Translation2d(0, 0), 
       Rotation2d.fromDegrees(0))); // x,y,heading in radians; Vision measurement std dev, higher=less weight
 
-      // Configure AutoBuilder last
-    AutoBuilder.configureHolonomic(
-            this::getPose, // Robot pose supplier
-            this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-            () -> DriveConstants.DriveKinematics.toChassisSpeeds(
-              frontLeft.getState(), frontRight.getState(), rearLeft.getState(), rearRight.getState()),
-            (speeds) -> drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, false, false),
-            new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-                    4.5, // Max module speed, in m/s
-                    0.4, // Drive base radius in meters. Distance from robot center to furthest module.
-                    new ReplanningConfig() // Default path replanning config. See the API for the options here
-            ),
-            () -> {
-              // Boolean supplier that controls when the path will be mirrored for the red alliance
-              // This will flip the path being followed to the red side of the field.
-              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-              var alliance = DriverStation.getAlliance();
-              if (alliance == DriverStation.Alliance.Red) {
-                return true;
-              }
-              return false;
-            },
-            this // Reference to this subsystem to set requirements
-    );
+    //   // Configure AutoBuilder last
+    // AutoBuilder.configureHolonomic(
+    //         this::getPose, // Robot pose supplier
+    //         this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+    //         () -> DriveConstants.DriveKinematics.toChassisSpeeds(
+    //           frontLeft.getState(), frontRight.getState(), rearLeft.getState(), rearRight.getState()),
+    //         (speeds) -> drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, false, false),
+    //         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+    //                 new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+    //                 new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+    //                 4.5, // Max module speed, in m/s
+    //                 0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+    //                 new ReplanningConfig() // Default path replanning config. See the API for the options here
+    //         ),
+    //         () -> {
+    //           // Boolean supplier that controls when the path will be mirrored for the red alliance
+    //           // This will flip the path being followed to the red side of the field.
+    //           // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+    //           var alliance = DriverStation.getAlliance();
+    //           if (alliance == DriverStation.Alliance.Red) {
+    //             return true;
+    //           }
+    //           return false;
+    //         },
+    //         this // Reference to this subsystem to set requirements
+    // );
         
 
   }
@@ -184,6 +187,9 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Front Right Module Angle:", frontRight.getRawTurnEncoder());
     SmartDashboard.putNumber("Back Left Module Angle:", rearLeft.getRawTurnEncoder());
     SmartDashboard.putNumber("Back Right Module Angle:", rearRight.getRawTurnEncoder());
+    AbsoluteEncoder armEncoder = Arm.armEncoder;
+    final double armEncoderReading = armEncoder.getPosition();
+    SmartDashboard.putNumber("Arm Angle", armEncoderReading);
 
   }
 

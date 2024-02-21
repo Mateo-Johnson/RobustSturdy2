@@ -32,9 +32,9 @@ public class PurgeRing extends CommandBase {
     //FUNCTIONS FOR SIMPLICITY
     public void runIntakeAndOuttake(double speed) {
       rightIntake.set(speed);
-      wrongIntake.set(speed);
+      wrongIntake.set(-speed);
       rightOuttake.set(speed);
-      wrongOuttake.set(speed);
+      wrongOuttake.set(-speed);
     }
 
   // Called once the command ends or is interrupted.
