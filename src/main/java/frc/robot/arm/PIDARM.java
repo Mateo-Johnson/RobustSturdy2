@@ -23,6 +23,9 @@ public class PIDARM extends CommandBase {
   double aP = 0.01;
   double aI = 0.0;
   double aD = 0.0;
+  // double aP = 0.8;
+  // double aI = 0.1;
+  // double aD = 0.51;
   PIDController armPID = new PIDController(aP, aI, aD);
 
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
