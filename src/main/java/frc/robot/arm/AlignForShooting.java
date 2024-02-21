@@ -74,7 +74,7 @@ public class AlignForShooting extends CommandBase {
     double tX = tx.getDouble(0.0);
 
     double turnValue = armMovePID.calculate(armEncoderReading, armSetpoint);
-    double armValue = armAlignPID.calculate(tY, 5);
+    double armValue = armAlignPID.calculate(tY, 2);
     double turnValue1 = turningPID.calculate(tX, 0);
 
     //MOVE THE ARM TO THE SPECIFIC VALUE ABOVE THE APRILTAG
