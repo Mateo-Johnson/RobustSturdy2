@@ -52,6 +52,20 @@ public class AlignForShooting extends CommandBase {
   double tA = ta.getDouble(0.0); //SET ta = tA AND SET THE DEFAULT VALUE TO 0
   double tV = tv.getDouble(0.0); //SET tv = tV AND SET THE DEFAULT VALUE TO 0
 
+  static AbsoluteEncoder armEncoder = Arm.armEncoder;
+
+  private static final int cyclesPerRotation = 2048;
+  private static final int drivenGearTeeth = 60;
+  private static final int driveGearTeeth = 15;
+
+  public static double absoluteEncoderRevolutions = armEncoder.getPosition();
+  public static double gearRatio = (double) drivenGearTeeth / driveGearTeeth;
+  public static int encoderCyclesPerArmRevolution = (int) (cyclesPerRotation * gearRatio);
+  public static double degreesPerEncoderCycle = 360.0 / cyclesPerRotation;
+  public static double degrees = absoluteEncoderRevolutions * encoderCyclesPerArmRevolution * degreesPerEncoderCycle;
+
+
+
   public AlignForShooting(DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
     addRequirements(driveSubsystem);
@@ -66,7 +80,6 @@ public class AlignForShooting extends CommandBase {
   public void execute() {
 
     //CODE FOR HOLDING THE ARM IN PLACE
-    AbsoluteEncoder armEncoder = Arm.armEncoder;
     double armEncoderReading = armEncoder.getPosition();
     SmartDashboard.putNumber("arm angle", armEncoderReading);
     double armSetpoint = 0.259;
