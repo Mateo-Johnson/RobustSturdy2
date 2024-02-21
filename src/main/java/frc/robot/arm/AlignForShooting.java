@@ -2,13 +2,16 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+// JUST AS A NOTE, THE ARM RESTS AT ABOUT 0.422 ABS ENCODER READING
+
 package frc.robot.arm;
+
+import com.revrobotics.AbsoluteEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.drivetrain.DriveSubsystem;
 
@@ -16,62 +19,77 @@ public class AlignForShooting extends CommandBase {
   /** Creates a new MoveArm. */
   public static double initialHeading;
   private final DriveSubsystem driveSubsystem;
+
+  //PID VALUES FOR MOVING THE ARM
   double aP = 0.01;
   double aI = 0.0;
   double aD = 0.0;
-  // double aP = 0.8;
-  // double aI = 0.1;
-  // double aD = 0.51;
-  PIDController armPID = new PIDController(aP, aI, aD);
 
-  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-  NetworkTableEntry tx = table.getEntry("tx");
-  NetworkTableEntry ty = table.getEntry("ty");
-  NetworkTableEntry ta = table.getEntry("ta");
-  NetworkTableEntry tv = table.getEntry("tv");
-  double tX = tx.getDouble(0.0);
-  double tY = ty.getDouble(0.0);
-  double target = tv.getDouble(0.0);
+  //PID VALUES BUT THEY'RE DIFFERENT FOR ARM
+  double aMP = 0.8;
+  double aMI = 0.1;
+  double aMD = 0.51;
 
-    //PID VALUES
-    double tP = 0.01145;
-    double tI = 0.0000176;
-    double tD = 0.00098;
-    //CREATE A PID CONTROLLER WITH THE SPECIFIED CONSTANTS
-    PIDController turningPID = new PIDController(tP, tI, tD);
+  //PID VALUES FOR TURNING
+  double tP = 0.01145;
+  double tI = 0.0000176;
+  double tD = 0.00098;
+
+  //CREATE THE ARM AND TURNING PID SYSTEMS
+  PIDController armAlignPID = new PIDController(aP, aI, aD);
+  PIDController turningPID = new PIDController(tP, tI, tD);
+  PIDController armMovePID = new PIDController(aMP, aMI, aMD);
+
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight"); 
+  NetworkTableEntry tx = table.getEntry("tx");//THE X OFFSET OF THE TARGET IN THE CAMERA VIEW
+  NetworkTableEntry ty = table.getEntry("ty"); //THE Y OFFSET OF THE TARGET IN THE CAMERA VIEW
+  NetworkTableEntry ta = table.getEntry("ta"); //THE AREA THAT THE TARGET TAKES UP ON THE SCREEN
+  NetworkTableEntry tv = table.getEntry("tv"); //GET WHETHER THE LIMELIGHT HAS A TARGET OR NOT (1 OR 0)
+
+  double tX = tx.getDouble(0.0); //SET tx = tX AND SET THE DEFAULT VALUE TO 0
+  double tY = ty.getDouble(0.0); //SET ty = tY AND SET THE DEFAULT VALUE TO 0
+  double tA = ta.getDouble(0.0); //SET ta = tA AND SET THE DEFAULT VALUE TO 0
+  double tV = tv.getDouble(0.0); //SET tv = tV AND SET THE DEFAULT VALUE TO 0
 
   public AlignForShooting(DriveSubsystem driveSubsystem) {
-    // Use addRequirements() here to declare subsystem dependencies.
     this.driveSubsystem = driveSubsystem;
     addRequirements(driveSubsystem);
     initialHeading = driveSubsystem.getHeading();
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // AbsoluteEncoder armEncoder = Arm.armEncoder;
-    // double armEncoderReading = armEncoder.getPosition();
-    // double armSetpoint = armEncoderReading;
-    // double turnValue = armPID.calculate(armEncoderReading, armSetpoint);
-    // Arm.leftArm.set(turnValue * 5);
-    // Arm.rightArm.set(-turnValue * 5);
-    // SmartDashboard.putNumber("Turn Value", turnValue);
-    double tY = ty.getDouble(0.0);
-    double turnValue = armPID.calculate(tY, 5);
-    Arm.leftArm.set(-turnValue * 2);
-    Arm.rightArm.set(turnValue * 2);
 
+    //CODE FOR HOLDING THE ARM IN PLACE
+    AbsoluteEncoder armEncoder = Arm.armEncoder;
+    double armEncoderReading = armEncoder.getPosition();
+    double armSetpoint = 0.259;
+    double tY = ty.getDouble(0.0);
     double tX = tx.getDouble(0.0);
 
-    //THE LINE BELOW BASICALLY MEANS THAT IT IS CALCULATING THE PID CONTROLLER VALUE, TRYING TO MAKE THE FIRST VALUE MATCH THE SECOND VALUE
-    double turnValue1 = turningPID.calculate(tX, 0); //CREATE THE PID CONTROLLER, FROM THE STARTING POINT OF THE X OFFSET, AND MOVING TO ZERO
-    SmartDashboard.putNumber("TurnValue", turnValue);
+    double turnValue = armMovePID.calculate(armEncoderReading, armSetpoint);
+    double armValue = armAlignPID.calculate(tY, 5);
+    double turnValue1 = turningPID.calculate(tX, 0);
+
+    if (armEncoderReading >= 0.25 && armEncoderReading <= 0.265) { //IF THE ARM IS AT THE RIGHT POSITION
+
+    //MOVE THE ARM TO THE SPECIFIC VALUE ABOVE THE APRILTAG
+    PIDMoveArm(armValue);
+    //ALIGN THE DRIVETRAIN TO THE APRILTAG
     driveSubsystem.drive(0, 0, turnValue1, false, true);
+
+    } else if (armEncoderReading <= 0.25 || armEncoderReading >= 0.265) { //IF THE ARM IS AT THE WRONG POSITION
+
+      //MOVE THE ARM TO THE RIGHT POSITION
+      Arm.leftArm.set(turnValue * 5);
+      Arm.rightArm.set(-turnValue * 5);
+
+    }
+
   }
 
   // Called once the command ends or is interrupted.
@@ -79,6 +97,12 @@ public class AlignForShooting extends CommandBase {
   public void end(boolean interrupted) {
     Arm.leftArm.set(0);
     Arm.rightArm.set(0);
+  }
+
+  //FUNCTION FOR MOVING THE ARM
+  public void PIDMoveArm(double angle) {
+    Arm.leftArm.set(-angle * 2);
+    Arm.rightArm.set(angle * 2);
   }
 
   // Returns true when the command should end.
