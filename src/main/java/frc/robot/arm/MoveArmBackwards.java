@@ -19,7 +19,7 @@ public class MoveArmBackwards extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (AlignForShooting.degrees > 95) {
+    if (AlignForShooting.degrees >= 0) {
 
     Arm.rotateVector(0.3);
     

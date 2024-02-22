@@ -20,7 +20,7 @@ public class MoveArm extends CommandBase {
 
   @Override
   public void execute() {
-    if (AlignForShooting.degrees > 95) {
+    if (AlignForShooting.degrees <= 95) {
 
       Arm.rotateVector(-0.3);
 
