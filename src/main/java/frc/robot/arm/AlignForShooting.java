@@ -81,16 +81,17 @@ public class AlignForShooting extends CommandBase {
     double armEncoderReading =  (armEncoder.getPosition() - 0.42638435959816) * -1;
 
     double knownDistance = 10.0;  // known distance in feet
-    double tagWidth = 8.0 / 12.0;  // AprilTag physical width in feet (converted from inches)
-    double tagHeight = 8.0 / 12.0;  // AprilTag physical height in feet (converted from inches)
     double knownTA = 0.160;  // known tA value at the known distance
     double currentTA = tA;  // current tA value
 
-    double distance = (((calculateDistance(currentTA, knownTA, knownDistance, tagWidth, tagHeight)) / 0.06736752159) + 2);
+    double distance = calculateDistance(currentTA, knownTA, knownDistance);
 
     double targetAngle = Math.atan(distance/70);
-    SmartDashboard.putNumber("so silly", distance);
 
+    SmartDashboard.putNumber("so silly", distance);
+    SmartDashboard.putNumber("so sillyer", targetAngle);
+
+    //ENCODER TRANSLATING
     double absoluteEncoderRevolutions = armEncoderReading;
     double gearRatio = (double) drivenGearTeeth / driveGearTeeth;
     int encoderCyclesPerArmRevolution = (int) (cyclesPerRotation * gearRatio);
@@ -100,9 +101,10 @@ public class AlignForShooting extends CommandBase {
 
     //CODE FOR HOLDING THE ARM IN PLACE
     SmartDashboard.putNumber("arm angle", armEncoderReading);
-    double armSetpoint = 0.259;
+    double armSetpoint = targetAngle;
 
-    double turnValue = armMovePID.calculate(armEncoderReading, armSetpoint);
+    //PID LOOPS
+    double turnValue = armMovePID.calculate(degrees, armSetpoint);
     double armValue = armAlignPID.calculate(tY, 2);
     double turnValue1 = turningPID.calculate(tX, 0);
 
@@ -132,15 +134,12 @@ public class AlignForShooting extends CommandBase {
     Arm.rightArm.set(angle * 2);
   }
 
-  public static double calculateDistance(double currentTA, double knownTA, double knownDistance, double tagWidth, double tagHeight) {
-    // Calculate the tag size on the screen at the known distance
-    double tA_knownDistance = (tagWidth + tagHeight) / (2 * knownDistance);
-
+  public static double calculateDistance(double currentTA, double knownTA, double knownDistance) {
     // Calculate the ratio of current and known tA values
     double tA_ratio = currentTA / knownTA;
 
     // Adjust the distance based on the ratio
-    double distance = knownDistance * tA_knownDistance / tA_ratio;
+    double distance = knownDistance * tA_ratio;
 
     return distance;
 }
