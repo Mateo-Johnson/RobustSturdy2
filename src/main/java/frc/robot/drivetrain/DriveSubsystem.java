@@ -185,8 +185,6 @@ public class DriveSubsystem extends SubsystemBase {
     final double armEncoderReading = armEncoder.getPosition();
     SmartDashboard.putNumber("Arm Angle", armEncoderReading);
 
-    SmartDashboard.putNumber("arm angle degrees", AlignForShooting.degrees);
-
   }
 
 

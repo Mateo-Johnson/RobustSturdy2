@@ -9,12 +9,14 @@ package frc.robot.arm;
 import com.revrobotics.AbsoluteEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.drivetrain.DriveSubsystem;
+import frc.robot.vision.Vision;
 
 public class AlignForShooting extends CommandBase {
   /** Creates a new MoveArm. */
@@ -58,13 +60,6 @@ public class AlignForShooting extends CommandBase {
   private static final int drivenGearTeeth = 60;
   private static final int driveGearTeeth = 15;
 
-  public static double absoluteEncoderRevolutions = armEncoder.getPosition();
-  public static double gearRatio = (double) drivenGearTeeth / driveGearTeeth;
-  public static int encoderCyclesPerArmRevolution = (int) (cyclesPerRotation * gearRatio);
-  public static double degreesPerEncoderCycle = 360.0 / cyclesPerRotation;
-  public static double degrees = absoluteEncoderRevolutions * encoderCyclesPerArmRevolution * degreesPerEncoderCycle;
-
-
 
   public AlignForShooting(DriveSubsystem driveSubsystem) {
     this.driveSubsystem = driveSubsystem;
@@ -79,12 +74,33 @@ public class AlignForShooting extends CommandBase {
   @Override
   public void execute() {
 
+    double tX = tx.getDouble(0.0); 
+    double tY = ty.getDouble(0.0); 
+    double tA = ta.getDouble(0.0); 
+
+    double armEncoderReading =  (armEncoder.getPosition() - 0.42638435959816) * -1;
+
+    double knownDistance = 10.0;  // known distance in feet
+    double tagWidth = 8.0 / 12.0;  // AprilTag physical width in feet (converted from inches)
+    double tagHeight = 8.0 / 12.0;  // AprilTag physical height in feet (converted from inches)
+    double knownTA = 0.160;  // known tA value at the known distance
+    double currentTA = tA;  // current tA value
+
+    double distance = ((calculateDistance(currentTA, knownTA, knownDistance, tagWidth, tagHeight)) / 0.06736752159);
+
+    double targetAngle = Math.atan(distance/70);
+    SmartDashboard.putNumber("so silly", distance);
+
+    double absoluteEncoderRevolutions = armEncoderReading;
+    double gearRatio = (double) drivenGearTeeth / driveGearTeeth;
+    int encoderCyclesPerArmRevolution = (int) (cyclesPerRotation * gearRatio);
+    double degreesPerEncoderCycle = 360.0 / encoderCyclesPerArmRevolution; // Corrected line
+    double degrees = absoluteEncoderRevolutions * encoderCyclesPerArmRevolution * degreesPerEncoderCycle;
+    SmartDashboard.putNumber("idk man", degrees);
+
     //CODE FOR HOLDING THE ARM IN PLACE
-    double armEncoderReading = armEncoder.getPosition();
     SmartDashboard.putNumber("arm angle", armEncoderReading);
     double armSetpoint = 0.259;
-    double tY = ty.getDouble(0.0);
-    double tX = tx.getDouble(0.0);
 
     double turnValue = armMovePID.calculate(armEncoderReading, armSetpoint);
     double armValue = armAlignPID.calculate(tY, 2);
@@ -115,6 +131,19 @@ public class AlignForShooting extends CommandBase {
     Arm.leftArm.set(-angle * 2);
     Arm.rightArm.set(angle * 2);
   }
+
+  public static double calculateDistance(double currentTA, double knownTA, double knownDistance, double tagWidth, double tagHeight) {
+    // Calculate the tag size on the screen at the known distance
+    double tA_knownDistance = (tagWidth + tagHeight) / (2 * knownDistance);
+
+    // Calculate the ratio of current and known tA values
+    double tA_ratio = currentTA / knownTA;
+
+    // Adjust the distance based on the ratio
+    double distance = knownDistance * tA_knownDistance / tA_ratio;
+
+    return distance;
+}
 
   // Returns true when the command should end.
   @Override

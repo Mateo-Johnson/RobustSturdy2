@@ -41,7 +41,7 @@ public static double targetID = LimelightLib.getFiducialID(limelightName);
 public static double[] targetColor = LimelightLib.getTargetColor(limelightName);
 
 // Extract the position of the target from the Pose3d object
-Translation3d targetPosition = targetPose3d.getTranslation();
+public static Translation3d targetPosition = targetPose3d.getTranslation();
 
 // Calculate the distance between the robot and the target using the position of the target
 double distance = Math.sqrt(Math.pow(targetPosition.getX(), 2) + Math.pow(targetPosition.getY(), 2) + Math.pow(targetPosition.getZ(), 2));
