@@ -36,12 +36,12 @@ public static Pose3d camPose3dRobotSpace = LimelightLib.getCameraPose3d_TargetSp
 public static double[] camPose2dRobotSpace = LimelightLib.getCameraPose_TargetSpace(limelightName);
 
 //TARGET INFO GETTERS
-public static Pose3d targetPose3d = LimelightLib.getTargetPose3d_RobotSpace(limelightName);
+public static Pose3d targetPose3dCamSpace = LimelightLib.getTargetPose3d_CameraSpace(limelightName);
 public static double targetID = LimelightLib.getFiducialID(limelightName);
 public static double[] targetColor = LimelightLib.getTargetColor(limelightName);
 
 // Extract the position of the target from the Pose3d object
-public static Translation3d targetPosition = targetPose3d.getTranslation();
+public static Translation3d targetPosition = targetPose3dCamSpace.getTranslation();
 
 // Calculate the distance between the robot and the target using the position of the target
 double distance = Math.sqrt(Math.pow(targetPosition.getX(), 2) + Math.pow(targetPosition.getY(), 2) + Math.pow(targetPosition.getZ(), 2));
