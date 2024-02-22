@@ -86,7 +86,7 @@ public class AlignForShooting extends CommandBase {
     double knownTA = 0.160;  // known tA value at the known distance
     double currentTA = tA;  // current tA value
 
-    double distance = ((calculateDistance(currentTA, knownTA, knownDistance, tagWidth, tagHeight)) / 0.06736752159);
+    double distance = (((calculateDistance(currentTA, knownTA, knownDistance, tagWidth, tagHeight)) / 0.06736752159) + 2);
 
     double targetAngle = Math.atan(distance/70);
     SmartDashboard.putNumber("so silly", distance);
