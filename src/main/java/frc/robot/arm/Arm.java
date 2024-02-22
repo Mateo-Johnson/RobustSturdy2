@@ -4,12 +4,9 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
-
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import frc.robot.utils.Constants.DriveConstants;
-import frc.robot.vision.Vision;
+
 
 public class Arm {
 

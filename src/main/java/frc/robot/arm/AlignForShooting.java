@@ -9,14 +9,12 @@ package frc.robot.arm;
 import com.revrobotics.AbsoluteEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.drivetrain.DriveSubsystem;
-import frc.robot.vision.Vision;
 
 public class AlignForShooting extends CommandBase {
   /** Creates a new MoveArm. */
@@ -70,6 +68,12 @@ public class AlignForShooting extends CommandBase {
   @Override
   public void initialize() {}
 
+  public static double armEncoderReading =  (armEncoder.getPosition() - 0.42638435959816) * -1;
+  public static double gearRatio = (double) drivenGearTeeth / driveGearTeeth;
+  public static int encoderCyclesPerArmRevolution = (int) (cyclesPerRotation * gearRatio);
+  public static double degreesPerEncoderCycle = 360.0 / encoderCyclesPerArmRevolution; // Corrected line
+  public static double degrees = armEncoderReading * encoderCyclesPerArmRevolution * degreesPerEncoderCycle;
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
@@ -92,19 +96,18 @@ public class AlignForShooting extends CommandBase {
     SmartDashboard.putNumber("so sillyer", targetAngle);
 
     //ENCODER TRANSLATING
-    double absoluteEncoderRevolutions = armEncoderReading;
     double gearRatio = (double) drivenGearTeeth / driveGearTeeth;
     int encoderCyclesPerArmRevolution = (int) (cyclesPerRotation * gearRatio);
     double degreesPerEncoderCycle = 360.0 / encoderCyclesPerArmRevolution; // Corrected line
-    double degrees = absoluteEncoderRevolutions * encoderCyclesPerArmRevolution * degreesPerEncoderCycle;
+    double degrees = armEncoderReading * encoderCyclesPerArmRevolution * degreesPerEncoderCycle;
     SmartDashboard.putNumber("idk man", degrees);
 
     //CODE FOR HOLDING THE ARM IN PLACE
     SmartDashboard.putNumber("arm angle", armEncoderReading);
-    double armSetpoint = targetAngle;
+    // double armSetpoint = targetAngle;
 
     //PID LOOPS
-    double turnValue = armMovePID.calculate(degrees, armSetpoint);
+    // double turnValue = armMovePID.calculate(degrees, armSetpoint);
     double armValue = armAlignPID.calculate(tY, 2);
     double turnValue1 = turningPID.calculate(tX, 0);
 

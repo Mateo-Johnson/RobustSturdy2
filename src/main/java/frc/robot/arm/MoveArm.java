@@ -17,9 +17,14 @@ public class MoveArm extends CommandBase {
   public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
+
   @Override
   public void execute() {
-    Arm.rotateVector(-0.3);
+    if (AlignForShooting.degrees > 95) {
+
+      Arm.rotateVector(-0.3);
+
+    }
   }
 
   // Called once the command ends or is interrupted.
