@@ -84,7 +84,7 @@ public class AlignForShooting extends CommandBase {
 
     double armEncoderReading =  (armEncoder.getPosition() - 0.42638435959816) * -1;
 
-    double knownDistance = 10.0;  // known distance in feet
+    double knownDistance = 12.0;  // known distance in feet
     double knownTA = 0.160;  // known tA value at the known distance
     double currentTA = tA;  // current tA value
 
@@ -142,7 +142,7 @@ public class AlignForShooting extends CommandBase {
     double tA_ratio = currentTA / knownTA;
 
     // Adjust the distance based on the ratio
-    double distance = knownDistance * tA_ratio;
+    double distance = knownDistance / tA_ratio;
 
     return distance;
 }
